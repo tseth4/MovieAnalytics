@@ -1,24 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using MovieAnalytics.Data;
-using MovieAnalytics.Repositories.Interfaces;
-using MovieAnalytics.Repositories;
 using MovieAnalytics.Services.Interfaces;
-using MovieAnalytics.Services;
+using MovieAnalytics.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
+builder.Services.AddApplicationServices(builder.Configuration);
+//builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IMovieRepository, MovieRepository>();
-builder.Services.AddScoped<IMovieImportService, MovieImportService>();
+//builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+//builder.Services.AddScoped<IMovieImportService, MovieImportService>();
 
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

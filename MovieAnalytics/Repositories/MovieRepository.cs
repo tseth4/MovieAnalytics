@@ -1,31 +1,42 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using MovieAnalytics.Data;
+using MovieAnalytics.Helpers;
 using MovieAnalytics.Models.Domain;
+using MovieAnalytics.Models.DTOs;
 using MovieAnalytics.Repositories.Interfaces;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MovieAnalytics.Repositories
 {
-    public class MovieRepository(ApplicationDbContext context) : IMovieRepository
+    public class MovieRepository(ApplicationDbContext context, IMapper mapper) : IMovieRepository
     {
-        public async Task<bool> AddAsync(Movie entity)
+        //public async Task<bool> AddAsync(Movie entity)
+        //{
+        //    await context.Movies.AddAsync(entity);
+        //    return await context.SaveChangesAsync() > 0;
+        //}
+
+        //public async Task<bool> DeleteAsync(string id)
+        //{
+        //    var movie = await context.Movies.FindAsync(id);
+        //    if (movie == null) return false;
+
+        //    context.Movies.Remove(movie);
+        //    return await context.SaveChangesAsync() > 0;
+        //}
+
+
+        public async Task<PagedList<MovieDto>> GetAllAsync(MovieParams movieParams)
         {
-            await context.Movies.AddAsync(entity);
-            return await context.SaveChangesAsync() > 0;
-        }
 
-        public async Task<bool> DeleteAsync(string id)
-        {
-            var movie = await context.Movies.FindAsync(id);
-            if (movie == null) return false;
-
-            context.Movies.Remove(movie);
-            return await context.SaveChangesAsync() > 0;
-        }
-
-
-        public async Task<IEnumerable<Movie>> GetAllAsync()
-        {
-            return await context.Movies.ToListAsync();
+            var query = context.Movies.AsQueryable();
+            return await PagedList<MovieDto>.CreateAsync(
+                query.ProjectTo<MovieDto>(mapper.ConfigurationProvider),
+                movieParams.PageNumber,
+                movieParams.PageSize
+            );
         }
 
         public async Task<Movie?> GetByIdAsync(string id)  // Note the nullable return type
@@ -76,11 +87,11 @@ namespace MovieAnalytics.Repositories
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task<bool> UpdateAsync(Movie entity)
-        {
-            context.Movies.Update(entity);
-            return await context.SaveChangesAsync() > 0;
-        }
+        //public async Task<bool> UpdateAsync(Movie entity)
+        //{
+        //    context.Movies.Update(entity);
+        //    return await context.SaveChangesAsync() > 0;
+        //}
 
 
     }

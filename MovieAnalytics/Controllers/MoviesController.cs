@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MovieAnalytics.Extensions;
+using MovieAnalytics.Helpers;
 using MovieAnalytics.Models.Domain;
 using MovieAnalytics.Repositories.Interfaces;
 
@@ -10,9 +12,11 @@ namespace MovieAnalytics.Controllers
     {
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies([FromQuery] MovieParams movieParams)
         {
-            var movies = await movieRepository.GetAllAsync();
+            var movies = await movieRepository.GetAllAsync(movieParams);
+            Response.AddPaginationHeader(movies);
+
             return Ok(movies);
         }
 
@@ -48,38 +52,38 @@ namespace MovieAnalytics.Controllers
             return Ok(movies);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Movie>> CreateMovie(Movie movie)
-        {
-            var success = await movieRepository.AddAsync(movie);
-            if (!success)
-                return BadRequest();
+        //[HttpPost]
+        //public async Task<ActionResult<Movie>> CreateMovie(Movie movie)
+        //{
+        //    var success = await movieRepository.AddAsync(movie);
+        //    if (!success)
+        //        return BadRequest();
 
-            return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, movie);
-        }
+        //    return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, movie);
+        //}
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMovie(string id, Movie movie)
-        {
-            if (id != movie.Id)
-                return BadRequest();
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateMovie(string id, Movie movie)
+        //{
+        //    if (id != movie.Id)
+        //        return BadRequest();
 
-            var success = await movieRepository.UpdateAsync(movie);
-            if (!success)
-                return NotFound();
+        //    var success = await movieRepository.UpdateAsync(movie);
+        //    if (!success)
+        //        return NotFound();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMovie(string id)
-        {
-            var success = await movieRepository.DeleteAsync(id);
-            if (!success)
-                return NotFound();
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteMovie(string id)
+        //{
+        //    var success = await movieRepository.DeleteAsync(id);
+        //    if (!success)
+        //        return NotFound();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
     }
 }
