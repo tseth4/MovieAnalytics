@@ -52,38 +52,5 @@ namespace MovieAnalytics.Controllers
             return Ok(movies);
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult<Movie>> CreateMovie(Movie movie)
-        //{
-        //    var success = await movieRepository.AddAsync(movie);
-        //    if (!success)
-        //        return BadRequest();
-
-        //    return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, movie);
-        //}
-
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateMovie(string id, Movie movie)
-        //{
-        //    if (id != movie.Id)
-        //        return BadRequest();
-
-        //    var success = await movieRepository.UpdateAsync(movie);
-        //    if (!success)
-        //        return NotFound();
-
-        //    return NoContent();
-        //}
-
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteMovie(string id)
-        //{
-        //    var success = await movieRepository.DeleteAsync(id);
-        //    if (!success)
-        //        return NotFound();
-
-        //    return NoContent();
-        //}
-
     }
 }
