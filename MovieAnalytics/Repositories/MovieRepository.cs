@@ -1,4 +1,5 @@
-﻿using MovieAnalytics.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieAnalytics.Data;
 using MovieAnalytics.Models.Domain;
 using MovieAnalytics.Repositories.Interfaces;
 
@@ -6,49 +7,81 @@ namespace MovieAnalytics.Repositories
 {
     public class MovieRepository(ApplicationDbContext context) : IMovieRepository
     {
-        public Task<bool> AddAsync(Movie entity)
+        public async Task<bool> AddAsync(Movie entity)
         {
-            throw new NotImplementedException();
+            await context.Movies.AddAsync(entity);
+            return await context.SaveChangesAsync() > 0;
         }
 
-        public Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            throw new NotImplementedException();
+            var movie = await context.Movies.FindAsync(id);
+            if (movie == null) return false;
+
+            context.Movies.Remove(movie);
+            return await context.SaveChangesAsync() > 0;
         }
 
-        public Task<IEnumerable<Movie>> GetAllAsync()
+
+        public async Task<IEnumerable<Movie>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await context.Movies.ToListAsync();
         }
 
-        public Task<Movie> GetByIdAsync(string id)
+        public async Task<Movie?> GetByIdAsync(string id)  // Note the nullable return type
         {
-            throw new NotImplementedException();
+            return await context.Movies.FindAsync(id);
         }
 
-        public Task<IEnumerable<Movie>> GetMoviesByDirectorAsync(string directorName)
+        public async Task<IEnumerable<Movie>> GetMoviesByDirectorAsync(string directorName)
         {
-            throw new NotImplementedException();
+            return await context.Movies
+                .Include(m => m.MovieDirectors)
+                .ThenInclude(md => md.Director)
+                .Where(m => m.MovieDirectors.Any(md => md.Director.Name == directorName))
+                .ToListAsync();
         }
 
-        public Task<IEnumerable<Movie>> GetMoviesByGenreAsync(string genre)
+        public async Task<IEnumerable<Movie>> GetMoviesByGenreAsync(string genre)
         {
-            throw new NotImplementedException();
+            return await context.Movies
+                .Include(m => m.MovieGenres)
+                .ThenInclude(mg => mg.Genre)
+                .Where(m => m.MovieGenres.Any(mg => mg.Genre.Name == genre))
+                .ToListAsync();
         }
 
-        public Task<IEnumerable<Movie>> GetMoviesByYearAsync(int year)
+        public async Task<IEnumerable<Movie>> GetMoviesByYearAsync(int year)
         {
-            throw new NotImplementedException();
+            return await context.Movies.Where(m => m.Year == year).ToListAsync();
         }
 
-        public Task<Movie> GetMovieWithAllRelationsAsync(string id)
+        public async Task<Movie?> GetMovieWithAllRelationsAsync(string id)
         {
-            throw new NotImplementedException();
+            return await context.Movies
+                .Include(m => m.MovieDirectors)
+                    .ThenInclude(md => md.Director)
+                .Include(m => m.MovieWriters)
+                    .ThenInclude(mw => mw.Writer)
+                .Include(m => m.MovieStars)
+                    .ThenInclude(ms => ms.Star)
+                .Include(m => m.MovieGenres)
+                    .ThenInclude(mg => mg.Genre)
+                .Include(m => m.MovieCountries)
+                    .ThenInclude(mc => mc.Country)
+                .Include(m => m.MovieProductionCompanies)
+                    .ThenInclude(mp => mp.ProductionCompany)
+                .Include(m => m.MovieLanguages)
+                    .ThenInclude(ml => ml.Language)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public Task<bool> UpdateAsync(Movie entity)
+        public async Task<bool> UpdateAsync(Movie entity)
         {
-            throw new NotImplementedException();
+            context.Movies.Update(entity);
+            return await context.SaveChangesAsync() > 0;
         }
+
+
     }
 }
