@@ -1,32 +1,21 @@
 import { useEffect } from "react"
 import { MovieCard } from "./MovieCard"
 import { useMovies } from "@/context/MoviesContext"
+import { Pagination } from "@/components/Pagination"
 
 
 export default function Movies() {
+  const { movies, currentPage, totalPages, loading, error, fetchMovies } = useMovies()
 
-  const { movies, loading, error, fetchMovies } = useMovies()
-
-  // const [movies, setMovies] = useState<Movie[]>([])
-  // const [loading, setLoading] = useState(true)
-  // const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     console.log("fetching")
-    fetchMovies()
-  }, [fetchMovies])
+    fetchMovies(currentPage)
+  }, [currentPage])
 
-  // const fetchMovies = async () => {
-  //   try {
-  //     const data = await movieService.getMovies()
-  //     setMovies(data)
-  //   } catch (error) {
-  //     setError(error instanceof Error ? error.message : 'An error occured')
-  //     console.error('Failed to fetch movies:', error)
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
+  const handlePageChange = (page: number) => {
+    fetchMovies(page)
+  }
 
 
   if (loading) return <div>Loading...</div>
@@ -40,6 +29,11 @@ export default function Movies() {
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
     </>
   )
