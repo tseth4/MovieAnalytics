@@ -6,17 +6,9 @@ const api = axios.create({
   baseURL: API_URL
 });
 
-// interface PaginatedResponse<T> {
-//   items: T[]
-//   currentPage: number
-//   totalPages: number
-//   totalCount: number
-//   pageSize: number
-// }
 
 export const movieService = {
   getMovies: async (page = 1, pageSize = 10) => {
-    console.log("getMovies")
     const response = await api.get(`/movies?pageNumber=${page}&pageSize=${pageSize}`)
 
     const items = response.data;

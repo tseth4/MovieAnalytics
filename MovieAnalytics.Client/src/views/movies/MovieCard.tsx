@@ -2,17 +2,48 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Movie } from "@/types/movie"
+import { useEffect, useState } from "react";
+import { tmdbService } from "@/services/api/tmdb";
 
 interface MovieCardProps {
   movie: Movie
 }
 
 export function MovieCard({ movie }: MovieCardProps) {
+
+  const [poster, setPoster] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPoster = async () => {
+      try {
+        const movieData = await tmdbService.getMovieByImdbId(movie.id);
+        // console.log("movieData: ", movieData)
+        if (movieData?.poster_path) {
+          let imagePath = tmdbService.getPosterUrl(movieData.poster_path)
+          setPoster(imagePath);
+        }
+      } catch (error) {
+        console.error('Failed to fetch poster:', error);
+      }
+    };
+
+    fetchPoster();
+    // console.log("poster from movie card: ", poster)
+  }, [movie.id]);
   return (
     <Card className="flex flex-row overflow-hidden">
       {/* Left side - could be for an image later */}
       <div className="w-48 bg-muted flex items-center justify-center">
-        <div className="text-4xl">🎬</div>
+        <div className="text-4xl">
+          {poster ? (
+            <img src={poster} alt="Poster" />
+          ) : (
+            <span role="img" aria-label="No Poster">
+              🎬
+            </span>
+          )}
+
+        </div>
       </div>
 
       {/* Right side - movie info */}

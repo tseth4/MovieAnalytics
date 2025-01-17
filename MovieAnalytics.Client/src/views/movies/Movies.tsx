@@ -9,7 +9,6 @@ export default function Movies() {
 
 
   useEffect(() => {
-    console.log("fetching")
     fetchMovies(currentPage)
   }, [currentPage])
 
