@@ -2,10 +2,7 @@
 {
     public class Movie
     {
-        // Cuurently
         public required string Id { get; set; }
-        // Cuurently
-
         public required string Title { get; set; }
         public string? MovieLink { get; set; }
         public int? Year { get; set; }

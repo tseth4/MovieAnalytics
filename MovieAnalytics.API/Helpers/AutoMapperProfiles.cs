@@ -25,7 +25,16 @@ namespace MovieAnalytics.Helpers
                         .Select(mw => mw.Writer.Name)))
                 .ForMember(dest => dest.StarNames, opt =>
                     opt.MapFrom(src => src.MovieStars
-                        .Select(ms => ms.Star.Name)));
+                        .Select(ms => ms.Star.Name)))
+                .ForMember(dest => dest.CountryNames, opt =>
+                    opt.MapFrom(src => src.MovieCountries
+                        .Select(mc => mc.Country.Name)))
+                .ForMember(dest => dest.ProductionCompanies, opt =>
+                    opt.MapFrom(src => src.MovieProductionCompanies
+                        .Select(mpc => mpc.ProductionCompany.Name)))
+                .ForMember(dest => dest.Languages, opt =>
+                    opt.MapFrom(src => src.MovieLanguages
+                        .Select(ml => ml.Language.Name)));
 
             // For detailed view
             CreateMap<Movie, MovieDetailDto>()
