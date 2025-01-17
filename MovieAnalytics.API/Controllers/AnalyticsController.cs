@@ -1,6 +1,8 @@
-﻿namespace MovieAnalytics.API.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace MovieAnalytics.API.Controllers
 {
-    public class AnalyticsController
+    public class AnalyticsController : ControllerBase
     {
     }
 }

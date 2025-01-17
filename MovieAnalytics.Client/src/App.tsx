@@ -1,26 +1,32 @@
-import { Button } from "@/components/ui/button"
-import Layout from "@/components/layout/Layout"
+// import { Button } from "@/components/ui/button"
+// import Layout from "@/components/layout/Layout"
+import { Routes, Route } from 'react-router-dom'
+
 
 import './App.css'
-import { MovieCard } from "./components/MovieCard"
+// import { MovieCard } from "./components/MovieCard"
+import Home from "./views/Home"
+import Movies from "./views/movies/Movies"
+import Analytics from "./views/analytics/Analytics"
+import Layout from './components/layout/Layout'
 
 function App() {
 
-  let movie = {
-    title: "Example Title",
-    year: 1980,
-    rating: 10,
-    genres: ["Horror", "Thriller"]
-  }
+  // let movie = {
+  //   title: "Example Title",
+  //   year: 1980,
+  //   rating: 10,
+  //   genres: ["Horror", "Thriller"]
+  // }
 
   return (
     <>
       <Layout>
-        <Button onClick={() => console.log("Hello World!")} >Test Button</Button>
-        {/* <MovieCard
-          movie={movie}
-        /> */}
-
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movies" element={<Movies />} />
+          <Route path="/analytics" element={<Analytics />} />
+        </Routes>
       </Layout>
     </>
   )
