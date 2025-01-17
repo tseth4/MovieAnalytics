@@ -17,5 +17,10 @@ export const movieService = {
 
     return { items, pagination };
 
+  },
+  getMovie: async (id: string) => {
+    const response = await api.get(`/movies/${id}`)
+    return response.data;
+
   }
 }

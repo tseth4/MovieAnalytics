@@ -6,6 +6,7 @@ import Analytics from "./views/analytics/Analytics"
 import Layout from './components/layout/Layout'
 import { MoviesProvider } from './context/MoviesContext'
 import { ThemeProvider } from "@/components/ThemeProvider"
+import MovieDetail from './views/movies/MovieDetail'
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/movies" element={<Movies />} />
+              <Route path="/movies/:id" element={<MovieDetail />} />
               <Route path="/analytics" element={<Analytics />} />
             </Routes>
           </Layout>

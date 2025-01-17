@@ -12,6 +12,7 @@ namespace MovieAnalytics.Repositories.Interfaces
         Task<Movie?> GetMovieWithAllRelationsAsync(string id);
 
         Task<PagedList<MovieDto>> GetAllAsync(MovieParams movieParams);
-        Task<Movie?> GetByIdAsync(string id);
+
+        Task<MovieDto?> GetByIdAsync(string id);
     }
 }

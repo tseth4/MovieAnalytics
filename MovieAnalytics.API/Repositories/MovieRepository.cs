@@ -46,9 +46,13 @@ namespace MovieAnalytics.Repositories
             );
         }
 
-        public async Task<Movie?> GetByIdAsync(string id)  // Note the nullable return type
+        public async Task<MovieDto?> GetByIdAsync(string id)  // Note the nullable return type
         {
-            return await context.Movies.FindAsync(id);
+            var query = context.Movies.AsQueryable();
+
+            return await query
+                .ProjectTo<MovieDto>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public Task<IEnumerable<Movie>> GetMoviesByDirectorAsync(string directorName)

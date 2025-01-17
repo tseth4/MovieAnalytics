@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Movie } from "@/types/movie"
 import { useEffect, useState } from "react";
 import { tmdbService } from "@/services/api/tmdb";
+import { useNavigate } from "react-router-dom";
 
 interface MovieCardProps {
   movie: Movie
@@ -11,9 +12,13 @@ interface MovieCardProps {
 
 export function MovieCard({ movie }: MovieCardProps) {
 
+  const navigate = useNavigate()
+
+
   const [poster, setPoster] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("movie: ", movie)
     const fetchPoster = async () => {
       try {
         const movieData = await tmdbService.getMovieByImdbId(movie.id);
@@ -31,12 +36,12 @@ export function MovieCard({ movie }: MovieCardProps) {
     // console.log("poster from movie card: ", poster)
   }, [movie.id]);
   return (
-    <Card className="flex flex-row overflow-hidden">
+    <Card className="flex flex-row overflow-hidden hover:shadow-lg cursor-pointer" onClick={() => navigate(`/movies/${movie.id}`)}>
       {/* Left side - could be for an image later */}
       <div className="w-48 bg-muted flex items-center justify-center">
         <div className="text-4xl">
           {poster ? (
-            <img src={poster} alt="Poster" />
+            <img  src={poster} alt="Poster" />
           ) : (
             <span role="img" aria-label="No Poster">
               🎬
@@ -55,7 +60,12 @@ export function MovieCard({ movie }: MovieCardProps) {
           </div>
           <Badge variant="secondary">{movie.rating}</Badge>
         </div>
-
+        <div className="space-y-2 flex-row items-start justify-start">
+          <div className="items-start flex gap-2">
+            <p className="text-sm font-semibold">Rating: </p>
+            <p className="text-sm ">{movie.mpaRating}</p>
+          </div>
+        </div>
         <div className="space-y-2 flex-row items-start justify-start">
           <div className="items-start flex">
             <p className="text-sm font-semibold">Directors:      <span className="text-sm text-muted-foreground">{movie.directorNames.join(', ')}</span>

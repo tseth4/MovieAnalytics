@@ -2,6 +2,7 @@
 using MovieAnalytics.Extensions;
 using MovieAnalytics.Helpers;
 using MovieAnalytics.Models.Domain;
+using MovieAnalytics.Models.DTOs;
 using MovieAnalytics.Repositories.Interfaces;
 
 namespace MovieAnalytics.Controllers
@@ -12,7 +13,7 @@ namespace MovieAnalytics.Controllers
     {
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies([FromQuery] MovieParams movieParams)
+        public async Task<ActionResult<IEnumerable<MovieDto>>> GetMovies([FromQuery] MovieParams movieParams)
         {
             var movies = await movieRepository.GetAllAsync(movieParams);
             Response.AddPaginationHeader(movies);
@@ -21,7 +22,7 @@ namespace MovieAnalytics.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(string id)
+        public async Task<ActionResult<MovieDto>> GetMovie(string id)
         {
             var movie = await movieRepository.GetByIdAsync(id);
             if (movie == null)
