@@ -58,7 +58,7 @@ npm run dev
 
 4. Create a `.env` file in the client directory:
 ```
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=https://localhost:7212/api
 VITE_TMDB_API_KEY=your_tmdb_api_key
 ```
 
