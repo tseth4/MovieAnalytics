@@ -5,6 +5,8 @@ namespace MovieAnalytics.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
+
+        private static readonly ILoggerFactory DbLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Director> Directors { get; set; }
         public DbSet<Writer> Writers { get; set; }
@@ -23,6 +25,16 @@ namespace MovieAnalytics.Data
         public DbSet<MovieProductionCompany> MovieProductionCompanies { get; set; }
         public DbSet<MovieLanguage> MovieLanguages { get; set; }
         // Add other DbSets
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            optionsBuilder
+                .UseLoggerFactory(DbLoggerFactory)       // Enable console logging for EF Core
+                .EnableSensitiveDataLogging()           // Log query parameters (only for debugging)
+                .EnableDetailedErrors();                // Log detailed EF Core errors
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

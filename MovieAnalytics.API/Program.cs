@@ -5,6 +5,11 @@ using MovieAnalytics.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();

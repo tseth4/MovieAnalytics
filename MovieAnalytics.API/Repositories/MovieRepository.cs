@@ -7,11 +7,12 @@ using MovieAnalytics.Helpers;
 using MovieAnalytics.Models.Domain;
 using MovieAnalytics.Models.DTOs;
 using MovieAnalytics.Repositories.Interfaces;
+using System.Diagnostics;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MovieAnalytics.Repositories
 {
-    public class MovieRepository(ApplicationDbContext context, IMapper mapper) : IMovieRepository
+    public class MovieRepository(ApplicationDbContext context, IMapper mapper, ILogger<MovieRepository> logger) : IMovieRepository
     {
 
         public async Task<PagedList<MovieDto>> GetAllAsync(MovieParams movieParams)
@@ -49,7 +50,9 @@ namespace MovieAnalytics.Repositories
 
         public async Task<List<YearlyAggregationDto>> GetAggregatedDataAsync()
         {
-            return await context.Movies
+            var stopwatch = Stopwatch.StartNew();
+
+            var result = await context.Movies
                 .Where(m => 
                 m.Year.HasValue &&
                 m.Budget.HasValue && m.Budget > 0 && 
@@ -62,6 +65,11 @@ namespace MovieAnalytics.Repositories
                     AvgBudget = g.Average(m => m.Budget.Value),
                     AvgGross = g.Average(m => m.GrossWorldWide.Value)
                 }).ToListAsync();
+
+
+            stopwatch.Stop();
+            logger.LogInformation($"GetAggregatedDataAsync executed in {stopwatch.ElapsedMilliseconds} ms.");
+            return result;
         }
 
         public async Task<MovieDto?> GetByIdAsync(string id)  // Note the nullable return type
