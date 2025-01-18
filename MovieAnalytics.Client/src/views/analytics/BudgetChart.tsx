@@ -28,6 +28,11 @@ const BudgetChart: React.FC = () => {
     }))
     : [];
 
+    useEffect(() => {
+      console.log("analyticsData: ", analyticsData)
+      console.log("chartData: ", chartData)
+    }, [chartData])
+
   return (
     <div className="w-full">
       <h2><strong>Average Budget and Gross Profit by Year in the United States</strong></h2>
@@ -53,8 +58,8 @@ const BudgetChart: React.FC = () => {
             />
             <Tooltip formatter={(value: number) => `$${(value / 1_000_000).toFixed(1)}M`} />
             <Legend />
-            <Bar dataKey="avgBudget" fill="blue" name="Avg Budget" />
-            <Bar dataKey="avgGross" fill="red" name="Avg Gross" />
+            <Bar dataKey="avgBudget" fill="red" name="Avg Budget" />
+            <Bar dataKey="avgGross" fill="blue" name="Avg Gross" />
           </BarChart>
         </ResponsiveContainer>
       )}
