@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using MovieAnalytics.API.Models.DTOs.Analytics;
 using MovieAnalytics.Data;
 using MovieAnalytics.Helpers;
 using MovieAnalytics.Models.Domain;
@@ -46,6 +47,23 @@ namespace MovieAnalytics.Repositories
             );
         }
 
+        public async Task<List<YearlyAggregationDto>> GetAggregatedDataAsync()
+        {
+            return await context.Movies
+                .Where(m => 
+                m.Year.HasValue &&
+                m.Budget.HasValue && m.Budget > 0 && 
+                m.GrossWorldWide.HasValue && m.GrossWorldWide > 0
+                )
+                .GroupBy(m => m.Year.Value)
+                .Select(g => new YearlyAggregationDto
+                {
+                    Year = g.Key,
+                    AvgBudget = g.Average(m => m.Budget.Value),
+                    AvgGross = g.Average(m => m.GrossWorldWide.Value)
+                }).ToListAsync();
+        }
+
         public async Task<MovieDto?> GetByIdAsync(string id)  // Note the nullable return type
         {
             var query = context.Movies.AsQueryable();
@@ -75,48 +93,6 @@ namespace MovieAnalytics.Repositories
             throw new NotImplementedException();
         }
 
-        //public async Task<IEnumerable<Movie>> GetMoviesByDirectorAsync(string directorName)
-        //{
-        //    return await context.Movies
-        //        .Include(m => m.MovieDirectors)
-        //        .ThenInclude(md => md.Director)
-        //        .Where(m => m.MovieDirectors.Any(md => md.Director.Name == directorName))
-        //        .ToListAsync();
-        //}
-
-        //public async Task<IEnumerable<Movie>> GetMoviesByGenreAsync(string genre)
-        //{
-        //    return await context.Movies
-        //        .Include(m => m.MovieGenres)
-        //        .ThenInclude(mg => mg.Genre)
-        //        .Where(m => m.MovieGenres.Any(mg => mg.Genre.Name == genre))
-        //        .ToListAsync();
-        //}
-
-        //public async Task<IEnumerable<Movie>> GetMoviesByYearAsync(int year)
-        //{
-        //    return await context.Movies.Where(m => m.Year == year).ToListAsync();
-        //}
-
-        //public async Task<Movie?> GetMovieWithAllRelationsAsync(string id)
-        //{
-        //    return await context.Movies
-        //        .Include(m => m.MovieDirectors)
-        //            .ThenInclude(md => md.Director)
-        //        .Include(m => m.MovieWriters)
-        //            .ThenInclude(mw => mw.Writer)
-        //        .Include(m => m.MovieStars)
-        //            .ThenInclude(ms => ms.Star)
-        //        .Include(m => m.MovieGenres)
-        //            .ThenInclude(mg => mg.Genre)
-        //        .Include(m => m.MovieCountries)
-        //            .ThenInclude(mc => mc.Country)
-        //        .Include(m => m.MovieProductionCompanies)
-        //            .ThenInclude(mp => mp.ProductionCompany)
-        //        .Include(m => m.MovieLanguages)
-        //            .ThenInclude(ml => ml.Language)
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //}
 
     }
 }

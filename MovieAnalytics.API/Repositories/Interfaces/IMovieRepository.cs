@@ -1,4 +1,5 @@
-﻿using MovieAnalytics.Helpers;
+﻿using MovieAnalytics.API.Models.DTOs.Analytics;
+using MovieAnalytics.Helpers;
 using MovieAnalytics.Models.Domain;
 using MovieAnalytics.Models.DTOs;
 
@@ -14,5 +15,9 @@ namespace MovieAnalytics.Repositories.Interfaces
         Task<PagedList<MovieDto>> GetAllAsync(MovieParams movieParams);
 
         Task<MovieDto?> GetByIdAsync(string id);
+
+        //Task<List<MovieDto>> GetAllForAnalyticsAsync();
+
+        Task<List<YearlyAggregationDto>> GetAggregatedDataAsync();
     }
 }

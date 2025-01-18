@@ -4,6 +4,8 @@ using MovieAnalytics.Services.Interfaces;
 using MovieAnalytics.Services;
 using MovieAnalytics.Data;
 using Microsoft.EntityFrameworkCore;
+using MovieAnalytics.API.Services.Interfaces;
+using MovieAnalytics.API.Services;
 
 namespace MovieAnalytics.Extensions
 {
@@ -20,6 +22,8 @@ namespace MovieAnalytics.Extensions
             });
             services.AddScoped<IMovieRepository, MovieRepository>();
             services.AddScoped<IMovieImportService, MovieImportService>();
+            services.AddScoped<IMovieAnalyticsService, MovieAnalyticsService>();
+
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
