@@ -9,17 +9,24 @@ namespace MovieAnalytics.Helpers
     {
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
+            // Return null for empty or whitespace values
             if (string.IsNullOrWhiteSpace(text))
             {
-                return null; 
+                return null;
             }
 
-            if (decimal.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out decimal result))
+            // Remove symbols like '$' or ',' for cleaner parsing
+            text = text.Replace("$", "").Replace(",", "").Trim();
+
+            // Try parsing as a decimal using invariant culture
+            if (decimal.TryParse(text, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out decimal result))
             {
-                return result; 
+                return result;
             }
 
-            throw new FormatException($"Invalid decimal value: {text}");
+            // Log invalid value and return null instead of throwing an exception
+            Console.WriteLine($"Invalid decimal value: {text}");
+            return null;
         }
 
     }

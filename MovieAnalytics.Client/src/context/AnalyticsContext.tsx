@@ -1,27 +1,27 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { ChartDataDto } from "@/types/chart";
+import { BudgetVsGrossChartDataDto } from "@/types/chart";
 import { analyticsService } from "@/services/api/AnalyticsService";
 
 interface AnalyticsContextType {
-  analyticsData: ChartDataDto | null;
+  analyticsData: BudgetVsGrossChartDataDto | null;
   loading: boolean;
   error: string | null;
-  fetchAnalyticsData: () => Promise<void>;
+  fetchAnalyticsData: (countryName: string) => Promise<void>;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextType | undefined>(undefined);
 
 export function AnalyticsProvider({ children }: { children: ReactNode }) {
-  const [analyticsData, setAnalyticsData] = useState<ChartDataDto | null>(null);
+  const [analyticsData, setAnalyticsData] = useState<BudgetVsGrossChartDataDto | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchAnalyticsData = async () => {
+  const fetchAnalyticsData = async (countryName: string) => {
     if (!analyticsData) { // Fetch only if data hasn't been fetched yet
       setLoading(true);
       setError(null);
       try {
-        const response = await analyticsService.getBudgetVsGrossData();
+        const response = await analyticsService.getBudgetVsGrossData(countryName);
         setAnalyticsData(response);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch analytics data");

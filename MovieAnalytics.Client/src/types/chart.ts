@@ -1,4 +1,5 @@
-export interface ChartDataDto {
+export interface BudgetVsGrossChartDataDto {
   labels: string[]
-  values: number[]
+  avgBudgetValues: number[]
+  avgGrossValues: number[]
 }

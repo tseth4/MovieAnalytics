@@ -18,6 +18,6 @@ namespace MovieAnalytics.Repositories.Interfaces
 
         //Task<List<MovieDto>> GetAllForAnalyticsAsync();
 
-        Task<List<YearlyAggregationDto>> GetAggregatedDataAsync();
+        Task<List<YearlyAggregationDto>> GetAggregatedDataAsync(string countryName);
     }
 }

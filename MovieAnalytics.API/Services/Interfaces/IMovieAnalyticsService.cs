@@ -4,7 +4,7 @@ namespace MovieAnalytics.API.Services.Interfaces
 {
     public interface IMovieAnalyticsService
     {
-        Task<ChartDataDto> GetBudgetVsGrossChartDataAsync();
+        Task<BudgetVsGrossChartDataDto> GetBudgetVsGrossChartDataAsync(string countryName);
         //Task<YearlyAggregationDto> GetAggregatedDataAsync();
 
     }

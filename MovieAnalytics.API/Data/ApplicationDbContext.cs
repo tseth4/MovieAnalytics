@@ -40,6 +40,15 @@ namespace MovieAnalytics.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Movie>(entity =>
+            {
+                entity.Property(e => e.Budget).HasColumnType("NUMERIC"); // Explicitly map to NUMERIC
+                entity.Property(e => e.GrossWorldWide).HasColumnType("NUMERIC");
+                entity.Property(e => e.GrossUsCanada).HasColumnType("NUMERIC");
+                entity.Property(e => e.OpeningWeekendGross).HasColumnType("NUMERIC");
+                entity.Property(e => e.Rating).HasColumnType("NUMERIC");
+            });
+
             // Movie director
             // Configure many-to-many relationships
             // Configure Composite primary key

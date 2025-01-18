@@ -9,10 +9,10 @@ namespace MovieAnalytics.API.Controllers
     public class AnalyticsController(IMovieAnalyticsService movieAnalyticsService) : ControllerBase
     {
 
-        [HttpGet("budget-vs-gross")]
-        public async Task<ActionResult<ChartDataDto>> GetBudgetVsGrossData()
+        [HttpGet("budget-vs-gross/{countryName}")]
+        public async Task<ActionResult<BudgetVsGrossChartDataDto>> GetBudgetVsGrossData(string countryName)
         {
-            var chartData = await movieAnalyticsService.GetBudgetVsGrossChartDataAsync();
+            var chartData = await movieAnalyticsService.GetBudgetVsGrossChartDataAsync(countryName);
             return Ok(chartData);
         }
 

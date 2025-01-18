@@ -15,13 +15,8 @@ import { ModeToggle } from "./ModeToggle"
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "/",
-    icon: Home,
-  },
-  {
     title: "Movies",
-    url: "/movies",
+    url: "/",
     icon: Inbox,
   },
   {

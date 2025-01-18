@@ -6,7 +6,7 @@ using MovieAnalytics.Data;
 
 #nullable disable
 
-namespace MovieAnalytics.Migrations
+namespace MovieAnalytics.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -82,16 +82,16 @@ namespace MovieAnalytics.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal?>("Budget")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NUMERIC");
 
                     b.Property<string>("Duration")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal?>("GrossUsCanada")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NUMERIC");
 
                     b.Property<decimal?>("GrossWorldWide")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NUMERIC");
 
                     b.Property<string>("MovieLink")
                         .HasColumnType("TEXT");
@@ -103,13 +103,13 @@ namespace MovieAnalytics.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal?>("OpeningWeekendGross")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NUMERIC");
 
                     b.Property<int?>("Oscars")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal?>("Rating")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NUMERIC");
 
                     b.Property<string>("Title")
                         .IsRequired()

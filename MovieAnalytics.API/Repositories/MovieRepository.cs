@@ -8,6 +8,7 @@ using MovieAnalytics.Models.Domain;
 using MovieAnalytics.Models.DTOs;
 using MovieAnalytics.Repositories.Interfaces;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MovieAnalytics.Repositories
@@ -48,12 +49,13 @@ namespace MovieAnalytics.Repositories
             );
         }
 
-        public async Task<List<YearlyAggregationDto>> GetAggregatedDataAsync()
+        public async Task<List<YearlyAggregationDto>> GetAggregatedDataAsync(string countryName)
         {
             var stopwatch = Stopwatch.StartNew();
 
             var result = await context.Movies
-                .Where(m => 
+            .Where(m =>
+                m.MovieCountries.Any(mc => mc.Country.Name.Contains(countryName)) &&
                 m.Year.HasValue &&
                 m.Budget.HasValue && m.Budget > 0 && 
                 m.GrossWorldWide.HasValue && m.GrossWorldWide > 0

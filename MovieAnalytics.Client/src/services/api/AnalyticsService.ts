@@ -7,8 +7,8 @@ const api = axios.create({
 
 
 export const analyticsService = {
-  getBudgetVsGrossData: async () => {
-    const response = await api.get(`/analytics/budget-vs-gross`)
+  getBudgetVsGrossData: async (countryName: string) => {
+    const response = await api.get(`/analytics/budget-vs-gross/${countryName}`)
     return response.data;
   }
 }

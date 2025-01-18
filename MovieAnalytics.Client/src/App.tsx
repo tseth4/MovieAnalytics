@@ -13,14 +13,14 @@ import { AnalyticsProvider } from './context/AnalyticsContext'
 function App() {
 
   return (
-    <>
+    <div>
       <ThemeProvider>
         <AnalyticsProvider>
           <MoviesProvider>
             <Layout>
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/movies" element={<Movies />} />
+                <Route path="/" element={<Movies />} />
+                {/* <Route path="/movies" element={<Movies />} /> */}
                 <Route path="/movies/:id" element={<MovieDetail />} />
                 <Route path="/analytics" element={<Analytics />} />
               </Routes>
@@ -28,7 +28,7 @@ function App() {
           </MoviesProvider>
         </AnalyticsProvider>
       </ThemeProvider>
-    </>
+    </div>
   )
 }
 
