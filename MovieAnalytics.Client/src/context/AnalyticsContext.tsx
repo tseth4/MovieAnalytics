@@ -1,41 +1,61 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { BudgetVsGrossChartDataDto } from "@/types/chart";
+import { BudgetVsGrossChartDataDto, TopProfitableMovieData } from "@/types/chart";
 import { analyticsService } from "@/services/api/AnalyticsService";
 
 interface AnalyticsContextType {
-  analyticsData: BudgetVsGrossChartDataDto | null;
+  budgetVsGrossData: BudgetVsGrossChartDataDto | null;
+  topProfitableData: TopProfitableMovieData | null;
   loading: boolean;
   error: string | null;
-  fetchAnalyticsData: (countryName: string) => Promise<void>;
+  fetchBudgetVsGrossData: (countryName: string) => Promise<void>;
+  fetchTopProfitableMovieData: (countryName: string) => Promise<void>;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextType | undefined>(undefined);
 
 export function AnalyticsProvider({ children }: { children: ReactNode }) {
-  const [analyticsData, setAnalyticsData] = useState<BudgetVsGrossChartDataDto | null>(null);
+  const [budgetVsGrossData, setBudgetVsGrossData] = useState<BudgetVsGrossChartDataDto | null>(null);
+  const [topProfitableData, setTopProfitableData] = useState<TopProfitableMovieData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchAnalyticsData = async (countryName: string) => {
-    if (!analyticsData) { // Fetch only if data hasn't been fetched yet
+  const fetchBudgetVsGrossData = async (countryName: string) => {
+    if (!budgetVsGrossData) { // Fetch only if data hasn't been fetched yet
       setLoading(true);
       setError(null);
       try {
         const response = await analyticsService.getBudgetVsGrossData(countryName);
-        setAnalyticsData(response);
+        setBudgetVsGrossData(response);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch analytics data");
+        setError(err instanceof Error ? err.message : "Failed to fetch budget vs gross data");
       } finally {
         setLoading(false);
       }
     }
   };
 
+  const fetchTopProfitableMovieData = async (countryName: string) => {
+    if (!topProfitableData) { // Fetch only if data hasn't been fetched yet
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await analyticsService.getTopProfitableMovieData(countryName);
+        setTopProfitableData(response);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch top profitable data");
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
+
   const value = {
-    analyticsData,
+    budgetVsGrossData,
+    topProfitableData,
     loading,
     error,
-    fetchAnalyticsData,
+    fetchBudgetVsGrossData,
+    fetchTopProfitableMovieData
   };
 
   return (

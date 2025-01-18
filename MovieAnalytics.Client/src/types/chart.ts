@@ -3,3 +3,7 @@ export interface BudgetVsGrossChartDataDto {
   avgBudgetValues: number[]
   avgGrossValues: number[]
 }
+export interface TopProfitableMovieData {
+  labels: string[]
+  values: number[]
+}
