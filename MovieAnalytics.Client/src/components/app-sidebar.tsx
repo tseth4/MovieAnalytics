@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox } from "lucide-react"
+import { Film, House, ChartBar } from "lucide-react"
 
 import {
   Sidebar,
@@ -15,14 +15,19 @@ import { ModeToggle } from "./ModeToggle"
 // Menu items.
 const items = [
   {
-    title: "Movies",
+    title: "Home",
     url: "/",
-    icon: Inbox,
+    icon: House,
+  },
+  {
+    title: "Movies",
+    url: "/movies",
+    icon:  Film,
   },
   {
     title: "Analytics",
     url: "/analytics",
-    icon: Calendar,
+    icon: ChartBar,
   }
 ]
 

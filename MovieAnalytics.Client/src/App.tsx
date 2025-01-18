@@ -19,8 +19,8 @@ function App() {
           <MoviesProvider>
             <Layout>
               <Routes>
-                <Route path="/" element={<Movies />} />
-                {/* <Route path="/movies" element={<Movies />} /> */}
+                <Route path="/" element={<Home />} />
+                <Route path="/movies" element={<Movies />} />
                 <Route path="/movies/:id" element={<MovieDetail />} />
                 <Route path="/analytics" element={<Analytics />} />
               </Routes>
