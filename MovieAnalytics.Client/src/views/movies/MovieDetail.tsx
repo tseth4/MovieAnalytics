@@ -84,7 +84,7 @@ export default function MovieDetail() {
           </div>
           <div >
             <div className="space-y-6">
-              <div className="items-start flex flex-col">
+              <div className="items-start flex flex-col mt-5">
                 <p className="font-semibold">Directors:</p>
                 <p>{movie.directorNames.join(', ')}</p>
               </div>
