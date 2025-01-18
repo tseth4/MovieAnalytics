@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react'
 import { Movie } from '@/types/movie'
 import { movieService } from '@/services/api/MoviesService';
+import { FetchParams } from '@/types/fetchParams';
 
 
 interface MoviesContextType {
@@ -12,8 +13,9 @@ interface MoviesContextType {
   totalCount: number
   loading: boolean
   error: string | null
-  fetchMovies: (page: number) => Promise<void>
+  fetchMovies: (page: number, params?: FetchParams) => Promise<void>
 }
+
 
 const MoviesContext = createContext<MoviesContextType | undefined>(undefined);
 
@@ -26,19 +28,23 @@ export function MoviesProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [hasAttemptedFetch, setHasAttemptedFetch] = useState(false)
+  const [currentSearchTerm, setCurrentSearchTerm] = useState<string>('')
 
 
-  const fetchMovies = async (page: number) => {
+
+  const fetchMovies = async (page: number, params?: FetchParams) => {
     // Only fetch if we don't have movies already
-    if (!hasAttemptedFetch || page !== currentPage) {
+    if (!hasAttemptedFetch || page !== currentPage || params?.searchTerm !== currentSearchTerm) {
       setLoading(true)
       setError(null)
       try {
-        const response = await movieService.getMovies(page, pageSize)
+        const response = await movieService.getMovies(page, pageSize, params)
         setMovies(response.items)
         setCurrentPage(response.pagination.currentPage)
         setTotalPages(response.pagination.totalPages)
         setTotalCount(response.pagination.totalItems)
+        setCurrentSearchTerm(params?.searchTerm || '')
+
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch movies')
       } finally {

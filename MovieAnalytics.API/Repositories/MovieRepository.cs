@@ -21,27 +21,37 @@ namespace MovieAnalytics.Repositories
 
             var query = context.Movies.AsQueryable();
 
-
             if (!string.IsNullOrEmpty(movieParams.SearchTerm))
             {
-                query = query.Where(m => m.Title.Contains(movieParams.SearchTerm));
+                query = query.Where(m =>
+                    m.Title.Contains(movieParams.SearchTerm) ||
+                    m.MovieDirectors.Any(md => md.Director.Name.Contains(movieParams.SearchTerm)) ||
+                    m.MovieGenres.Any(mg => mg.Genre.Name.Contains(movieParams.SearchTerm))
+                );
             }
 
-            if (movieParams.Year.HasValue)
-            {
-                query = query.Where(m => m.Year == movieParams.Year);
-            }
 
-            if (!string.IsNullOrEmpty(movieParams.Genre))
-            {
-                query = query.Where(m => m.MovieGenres.Any(mg =>
-                    mg.Genre.Name == movieParams.Genre));
-            }
 
-            if (movieParams.MinRating.HasValue)
-            {
-                query = query.Where(m => m.Rating >= movieParams.MinRating);
-            }
+            //if (!string.IsNullOrEmpty(movieParams.SearchTerm))
+            //{
+            //    query = query.Where(m => m.Title.Contains(movieParams.SearchTerm));
+            //}
+
+            //if (movieParams.Year.HasValue)
+            //{
+            //    query = query.Where(m => m.Year == movieParams.Year);
+            //}
+
+            //if (!string.IsNullOrEmpty(movieParams.Genre))
+            //{
+            //    query = query.Where(m => m.MovieGenres.Any(mg =>
+            //        mg.Genre.Name == movieParams.Genre));
+            //}
+
+            //if (movieParams.MinRating.HasValue)
+            //{
+            //    query = query.Where(m => m.Rating >= movieParams.MinRating);
+            //}
             return await PagedList<MovieDto>.CreateAsync(
                 query.ProjectTo<MovieDto>(mapper.ConfigurationProvider),
                 movieParams.PageNumber,
