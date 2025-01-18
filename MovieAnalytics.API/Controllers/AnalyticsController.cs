@@ -16,5 +16,11 @@ namespace MovieAnalytics.API.Controllers
             return Ok(chartData);
         }
 
+        [HttpGet("top-profitable/{countryName}")]
+        public async Task<ActionResult<ChartDataDto>> GetTopProfitableMovies(string countryName)
+        {
+            var chartData = await movieAnalyticsService.GetTopProfitableMovies(countryName);
+            return Ok(chartData);
+        }
     }
 }

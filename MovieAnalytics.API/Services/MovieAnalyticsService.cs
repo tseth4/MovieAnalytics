@@ -9,7 +9,7 @@ namespace MovieAnalytics.API.Services
     {
         public async Task<BudgetVsGrossChartDataDto> GetBudgetVsGrossChartDataAsync(string countryName)
         {
-            var aggregatedData = await movieRepository.GetAggregatedDataAsync(countryName);
+            var aggregatedData = await movieRepository.GetBudgetVsGrossChartDataAsync(countryName);
 
             return new BudgetVsGrossChartDataDto
             {
@@ -18,5 +18,15 @@ namespace MovieAnalytics.API.Services
                 AvgBudgetValues = aggregatedData.Select(d => d.AvgBudget).ToList(),
             };
         }
+
+        public async Task<ChartDataDto> GetTopProfitableMovies(string countryName)
+        {   var movieRoiData = await movieRepository.GetTopProfitableMovies(countryName);
+            return new ChartDataDto
+            {
+                Labels = movieRoiData.Select(m => m.Title).ToList(),
+                Values = movieRoiData.Select(m => m.ROI ?? 0).ToList()
+            };
+        }
     }
+
 }

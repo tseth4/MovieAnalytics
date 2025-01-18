@@ -1,4 +1,5 @@
 ﻿using MovieAnalytics.API.Models.DTOs.Analytics;
+using System.Threading.Tasks;
 
 namespace MovieAnalytics.API.Services.Interfaces
 {
@@ -6,6 +7,7 @@ namespace MovieAnalytics.API.Services.Interfaces
     {
         Task<BudgetVsGrossChartDataDto> GetBudgetVsGrossChartDataAsync(string countryName);
         //Task<YearlyAggregationDto> GetAggregatedDataAsync();
+        Task<ChartDataDto> GetTopProfitableMovies(string countryName);
 
     }
 }

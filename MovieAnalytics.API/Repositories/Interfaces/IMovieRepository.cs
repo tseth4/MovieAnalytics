@@ -18,6 +18,7 @@ namespace MovieAnalytics.Repositories.Interfaces
 
         //Task<List<MovieDto>> GetAllForAnalyticsAsync();
 
-        Task<List<YearlyAggregationDto>> GetAggregatedDataAsync(string countryName);
+        Task<List<YearlyAggregationDto>> GetBudgetVsGrossChartDataAsync(string countryName);
+        Task<List<MovieROIDto>> GetTopProfitableMovies(string countryName);
     }
 }

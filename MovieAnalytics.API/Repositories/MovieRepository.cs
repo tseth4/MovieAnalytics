@@ -37,7 +37,7 @@ namespace MovieAnalytics.Repositories
             );
         }
 
-        public async Task<List<YearlyAggregationDto>> GetAggregatedDataAsync(string countryName)
+        public async Task<List<YearlyAggregationDto>> GetBudgetVsGrossChartDataAsync(string countryName)
         {
             var stopwatch = Stopwatch.StartNew();
 
@@ -60,6 +60,30 @@ namespace MovieAnalytics.Repositories
             stopwatch.Stop();
             logger.LogInformation($"GetAggregatedDataAsync executed in {stopwatch.ElapsedMilliseconds} ms.");
             return result;
+        }
+
+        public async Task<List<MovieROIDto>> GetTopProfitableMovies(string countryName)
+        {
+            var stopwatch = Stopwatch.StartNew();
+
+            var result = await context.Movies
+                .Where(m => m.MovieCountries.Any(mc => mc.Country.Name.Contains(countryName)) &&
+                m.Budget.HasValue &&
+                m.GrossWorldWide.HasValue
+                )
+                .OrderByDescending(m => (double) (m.GrossWorldWide - m.Budget))
+                .Take(10)
+                .Select(m => new MovieROIDto
+                {
+                    Title = m.Title,
+                    Budget = m.Budget,
+                    GrossWorldWide = m.GrossWorldWide,
+                    ROI = (m.GrossWorldWide - m.Budget) / m.Budget * 100
+                }).ToListAsync();
+            stopwatch.Stop();
+            logger.LogInformation($"GetTopProfitableMovies executed in {stopwatch.ElapsedMilliseconds} ms.");
+            return result;
+
         }
 
         public async Task<MovieDto?> GetByIdAsync(string id)  // Note the nullable return type
