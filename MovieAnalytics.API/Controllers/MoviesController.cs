@@ -7,15 +7,24 @@ using MovieAnalytics.Repositories.Interfaces;
 
 namespace MovieAnalytics.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
-    public class MoviesController(IMovieRepository movieRepository) : ControllerBase
+    public class MoviesController(IMovieRepository movieRepository, ILogger<MoviesController> logger) : ControllerBase
     {
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieDto>>> GetMovies([FromQuery] MovieParams movieParams)
         {
+
+            logger.LogInformation("Fetching movies with parameters: {MovieParams}", movieParams);
+
             var movies = await movieRepository.GetAllAsync(movieParams);
+            if (movies == null || !movies.Any())
+            {
+                logger.LogWarning("No movies found.");
+                return NotFound("No movies found.");
+            }
             Response.AddPaginationHeader(movies);
 
             return Ok(movies);
