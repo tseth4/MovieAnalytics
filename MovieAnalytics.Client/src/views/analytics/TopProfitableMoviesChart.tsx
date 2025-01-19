@@ -1,7 +1,7 @@
+import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useAnalytics } from "@/context/AnalyticsContext";
 import { useEffect } from "react";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 
 export default function TopProfitableMovie() {
@@ -32,10 +32,6 @@ export default function TopProfitableMovie() {
   } satisfies ChartConfig
 
 
-  useEffect(() => {
-    console.log("analyticsData: ", topProfitableData)
-    console.log("chartData: ", chartData)
-  }, [chartData])
 
   return (
     <div >

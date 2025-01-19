@@ -1,9 +1,9 @@
 // components/MovieCard.tsx
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Movie } from "@/types/movie"
-import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { tmdbService } from "@/services/api/tmdb";
+import { Movie } from "@/types/movie";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface MovieCardProps {
@@ -19,11 +19,9 @@ export function MovieCard({ movie }: MovieCardProps) {
   const [overview, setOverview] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("movie: ", movie)
     const fetchPoster = async () => {
       try {
         const movieData = await tmdbService.getMovieByImdbId(movie.id);
-        // console.log("movieData: ", movieData.overview)
         if (movieData?.poster_path) {
           let imagePath = tmdbService.getPosterUrl(movieData.poster_path)
           setPoster(imagePath);
@@ -37,7 +35,6 @@ export function MovieCard({ movie }: MovieCardProps) {
     };
 
     fetchPoster();
-    // console.log("poster from movie card: ", poster)
   }, [movie.id]);
   return (
     <Card className="flex flex-row overflow-hidden hover:shadow-lg cursor-pointer" onClick={() => navigate(`/movies/${movie.id}`)}>

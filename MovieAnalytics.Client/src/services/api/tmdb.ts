@@ -12,13 +12,10 @@ export const tmdbService = {
   },
 
   getPosterUrl: (posterPath: string) => {
-    // console.log(`poster URL: https://image.tmdb.org/t/p/original${posterPath}`)
     return `https://image.tmdb.org/t/p/original${posterPath}`;
   },
   getBackdropUrl: (backdropPath: string) => {
-    // console.log(`poster URL: https://image.tmdb.org/t/p/original${posterPath}`)
     return `https://image.tmdb.org/t/p/original${backdropPath}`;
   }
 };
 
-// https://image.tmdb.org/t/p/original/tJLV3BAlHOgscVOrA99Wnb2gAef.jpg

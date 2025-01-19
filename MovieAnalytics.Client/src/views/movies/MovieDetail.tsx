@@ -1,21 +1,19 @@
 // pages/MovieDetail.tsx
-import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { Movie } from '@/types/movie'
-import { movieService } from '@/services/api/MoviesService'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { tmdbService } from '@/services/api/tmdb'
 import { Button } from '@/components/ui/button'
-import { Check } from 'lucide-react'
-import { Link } from 'react-router-dom';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { movieService } from '@/services/api/MoviesService'
+import { tmdbService } from '@/services/api/tmdb'
+import { Movie } from '@/types/movie'
+import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 
 
 
 export default function MovieDetail() {
   const { id } = useParams()
   const [movie, setMovie] = useState<Movie | null>(null)
-  const [poster, setPoster] = useState<string | null>(null);
+  // const [poster, setPoster] = useState<string | null>(null);
   const [overview, setOverview] = useState<string | null>(null);
   const [backdrop, setBackdrop] = useState<string | null>(null);
   const [loading, setLoading] = useState(true)
@@ -24,7 +22,6 @@ export default function MovieDetail() {
     const fetchMovie = async () => {
       try {
         const data = await movieService.getMovie(id!)
-        console.log("data: ", data)
         setMovie(data)
       } catch (error) {
         console.error('Failed to fetch movie:', error)
@@ -35,11 +32,7 @@ export default function MovieDetail() {
     const fetchPosterOverviewBackdrop = async () => {
       try {
         const movieData = await tmdbService.getMovieByImdbId(id!);
-        console.log("movieData: ", movieData)
-        if (movieData?.poster_path) {
-          let imagePath = tmdbService.getPosterUrl(movieData.poster_path)
-          setPoster(imagePath);
-        }
+
         if (movieData?.overview) {
           setOverview(movieData.overview)
         }

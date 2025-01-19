@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace MovieAnalytics.API.Migrations
+namespace MovieAnalytics.API.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FixDecimalTypes : Migration
+    public partial class SqlInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,9 +14,9 @@ namespace MovieAnalytics.API.Migrations
                 name: "Countries",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,9 +27,9 @@ namespace MovieAnalytics.API.Migrations
                 name: "Directors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,9 +40,9 @@ namespace MovieAnalytics.API.Migrations
                 name: "Genres",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,9 +53,9 @@ namespace MovieAnalytics.API.Migrations
                 name: "Languages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,21 +66,21 @@ namespace MovieAnalytics.API.Migrations
                 name: "Movies",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    MovieLink = table.Column<string>(type: "TEXT", nullable: true),
-                    Year = table.Column<int>(type: "INTEGER", nullable: true),
-                    Duration = table.Column<string>(type: "TEXT", nullable: true),
-                    MpaRating = table.Column<string>(type: "TEXT", nullable: true),
-                    Rating = table.Column<decimal>(type: "NUMERIC", nullable: true),
-                    Votes = table.Column<int>(type: "INTEGER", nullable: true),
-                    Budget = table.Column<decimal>(type: "NUMERIC", nullable: true),
-                    GrossWorldWide = table.Column<decimal>(type: "NUMERIC", nullable: true),
-                    GrossUsCanada = table.Column<decimal>(type: "NUMERIC", nullable: true),
-                    OpeningWeekendGross = table.Column<decimal>(type: "NUMERIC", nullable: true),
-                    Wins = table.Column<int>(type: "INTEGER", nullable: true),
-                    Nominations = table.Column<int>(type: "INTEGER", nullable: true),
-                    Oscars = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MovieLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Year = table.Column<int>(type: "int", nullable: true),
+                    Duration = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MpaRating = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rating = table.Column<decimal>(type: "NUMERIC(18,0)", nullable: true),
+                    Votes = table.Column<int>(type: "int", nullable: true),
+                    Budget = table.Column<decimal>(type: "NUMERIC(18,0)", nullable: true),
+                    GrossWorldWide = table.Column<decimal>(type: "NUMERIC(18,0)", nullable: true),
+                    GrossUsCanada = table.Column<decimal>(type: "NUMERIC(18,0)", nullable: true),
+                    OpeningWeekendGross = table.Column<decimal>(type: "NUMERIC(18,0)", nullable: true),
+                    Wins = table.Column<int>(type: "int", nullable: true),
+                    Nominations = table.Column<int>(type: "int", nullable: true),
+                    Oscars = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -91,9 +91,9 @@ namespace MovieAnalytics.API.Migrations
                 name: "ProductionCompanies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -104,9 +104,9 @@ namespace MovieAnalytics.API.Migrations
                 name: "Stars",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,9 +117,9 @@ namespace MovieAnalytics.API.Migrations
                 name: "Writers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -130,8 +130,8 @@ namespace MovieAnalytics.API.Migrations
                 name: "MovieCountries",
                 columns: table => new
                 {
-                    MovieId = table.Column<string>(type: "TEXT", nullable: false),
-                    CountryId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CountryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,8 +154,8 @@ namespace MovieAnalytics.API.Migrations
                 name: "MovieDirectors",
                 columns: table => new
                 {
-                    MovieId = table.Column<string>(type: "TEXT", nullable: false),
-                    DirectorId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DirectorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -178,8 +178,8 @@ namespace MovieAnalytics.API.Migrations
                 name: "MovieGenres",
                 columns: table => new
                 {
-                    MovieId = table.Column<string>(type: "TEXT", nullable: false),
-                    GenreId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GenreId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,8 +202,8 @@ namespace MovieAnalytics.API.Migrations
                 name: "MovieLanguages",
                 columns: table => new
                 {
-                    MovieId = table.Column<string>(type: "TEXT", nullable: false),
-                    LanguageId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LanguageId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -226,8 +226,8 @@ namespace MovieAnalytics.API.Migrations
                 name: "MovieProductionCompanies",
                 columns: table => new
                 {
-                    MovieId = table.Column<string>(type: "TEXT", nullable: false),
-                    ProductionCompanyId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductionCompanyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -250,8 +250,8 @@ namespace MovieAnalytics.API.Migrations
                 name: "MovieStars",
                 columns: table => new
                 {
-                    MovieId = table.Column<string>(type: "TEXT", nullable: false),
-                    StarId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StarId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -274,8 +274,8 @@ namespace MovieAnalytics.API.Migrations
                 name: "MovieWriters",
                 columns: table => new
                 {
-                    MovieId = table.Column<string>(type: "TEXT", nullable: false),
-                    WriterId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    WriterId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

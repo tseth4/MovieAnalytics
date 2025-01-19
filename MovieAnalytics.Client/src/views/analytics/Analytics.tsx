@@ -1,4 +1,3 @@
-import BudgetChart from "./BudgetChart";
 import NewBudgeChart from "./NewBudgetChart";
 import TopProfitableMovie from "./TopProfitableMoviesChart";
 

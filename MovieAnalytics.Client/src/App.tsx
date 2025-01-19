@@ -1,13 +1,13 @@
-import { Routes, Route } from 'react-router-dom'
-import './App.css'
-import Home from "./views/Home"
-import Movies from "./views/movies/Movies"
-import Analytics from "./views/analytics/Analytics"
-import Layout from './components/layout/Layout'
-import { MoviesProvider } from './context/MoviesContext'
 import { ThemeProvider } from "@/components/ThemeProvider"
-import MovieDetail from './views/movies/MovieDetail'
+import { Route, Routes } from 'react-router-dom'
+import './App.css'
+import Layout from './components/layout/Layout'
 import { AnalyticsProvider } from './context/AnalyticsContext'
+import { MoviesProvider } from './context/MoviesContext'
+import Analytics from "./views/analytics/Analytics"
+import Home from "./views/Home"
+import MovieDetail from './views/movies/MovieDetail'
+import Movies from "./views/movies/Movies"
 
 
 function App() {

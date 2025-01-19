@@ -1,7 +1,6 @@
-import axios from 'axios'
-import { API_URL } from './config'
 import { FetchParams } from '@/types/fetchParams';
-// import { Movie } from '@/types/movie'  // Your movie interface
+import axios from 'axios';
+import { API_URL } from './config';
 
 const api = axios.create({
   baseURL: API_URL
@@ -16,7 +15,6 @@ export const movieService = {
       url += `&searchTerm=${params.searchTerm}`
     }
 
-    console.log("getting this url: ", url)
 
     const response = await api.get(url);
 
