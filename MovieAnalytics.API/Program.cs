@@ -89,17 +89,17 @@ using (var scope = app.Services.CreateScope())
         await context.Database.MigrateAsync();
         Console.WriteLine("Migrations applied successfully.");
 
-        if (!context.Movies.Any())
-        {
-            Console.WriteLine("Seeding database...");
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "movies.csv");
-            await movieImportService.ImportMoviesFromCsv(filePath);
-            Console.WriteLine("Database seeding completed successfully.");
-        }
-        else
-        {
-            Console.WriteLine("Database already contains data. Skipping seeding.");
-        }
+        //if (!context.Movies.Any())
+        //{
+        //    Console.WriteLine("Seeding database...");
+        //    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "movies.csv");
+        //    await movieImportService.ImportMoviesFromCsv(filePath);
+        //    Console.WriteLine("Database seeding completed successfully.");
+        //}
+        //else
+        //{
+        //    Console.WriteLine("Database already contains data. Skipping seeding.");
+        //}
     }
     catch (Exception ex)
     {
