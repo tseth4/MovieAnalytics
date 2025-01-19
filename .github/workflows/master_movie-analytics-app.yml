@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies and build Vite app
         run: |
-          cd client
+          cd MovieAnalytics.Client
           npm install
           npm run build
 
