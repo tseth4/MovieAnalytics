@@ -32,8 +32,6 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// SPA fallback to handle React routing
-app.MapFallbackToFile("index.html");
 
 
 
@@ -51,28 +49,61 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapFallbackToFile("index.html");
+
+
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//     var context = services.GetRequiredService<ApplicationDbContext>();
+//     var movieImportService = services.GetRequiredService<IMovieImportService>();
+
+//     // Ensure database is created/migrated
+//     await context.Database.MigrateAsync();
+
+//     // Check if database is empty before importing
+//     if (!context.Movies.Any())
+//     {
+//         try
+//         {
+//             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "movies.csv");
+//             await movieImportService.ImportMoviesFromCsv(filePath);
+//             Console.WriteLine("Data import completed successfully");
+//         }
+//         catch (Exception ex)
+//         {
+//             Console.WriteLine($"Error during data import: {ex.Message}");
+//         }
+//     }
+// }
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
     var movieImportService = services.GetRequiredService<IMovieImportService>();
 
-    // Ensure database is created/migrated
-    await context.Database.MigrateAsync();
-
-    // Check if database is empty before importing
-    if (!context.Movies.Any())
+    try
     {
-        try
-        {
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "movies.csv");
-            await movieImportService.ImportMoviesFromCsv(filePath);
-            Console.WriteLine("Data import completed successfully");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error during data import: {ex.Message}");
-        }
+        Console.WriteLine("Applying migrations...");
+        await context.Database.MigrateAsync();
+        Console.WriteLine("Migrations applied successfully.");
+
+        // if (!context.Movies.Any())
+        // {
+        //     Console.WriteLine("Seeding database...");
+        //     string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "movies.csv");
+        //     await movieImportService.ImportMoviesFromCsv(filePath);
+        //     Console.WriteLine("Database seeding completed successfully.");
+        // }
+        // else
+        // {
+        //     Console.WriteLine("Database already contains data. Skipping seeding.");
+        // }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error during migration or seeding: {ex.Message}");
     }
 }
 

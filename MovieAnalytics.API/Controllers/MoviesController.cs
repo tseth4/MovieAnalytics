@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 using MovieAnalytics.Extensions;
 using MovieAnalytics.Helpers;
 using MovieAnalytics.Models.Domain;
@@ -20,6 +21,7 @@ namespace MovieAnalytics.Controllers
 
             return Ok(movies);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<MovieDto>> GetMovie(string id)
