@@ -23,6 +23,8 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies and build Vite app
+        env:
+          VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
         run: |
           cd MovieAnalytics.Client
           npm install
