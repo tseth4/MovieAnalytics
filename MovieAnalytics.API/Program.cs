@@ -5,6 +5,7 @@ using MovieAnalytics.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -26,6 +27,14 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Serve static files from wwwroot
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+// SPA fallback to handle React routing
+app.MapFallbackToFile("index.html");
+
 
 
 // Configure the HTTP request pipeline.

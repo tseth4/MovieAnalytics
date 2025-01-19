@@ -17,7 +17,7 @@ namespace MovieAnalytics.Extensions
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(config.GetConnectionString("DefaultConnection"))
+                options.UseSqlite(config.GetConnectionString("DefaultConnection"))
                     .EnableSensitiveDataLogging() // Include parameters in logs
                     .EnableDetailedErrors();      // Log detailed errors for EF Core
 
