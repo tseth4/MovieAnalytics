@@ -6,8 +6,6 @@ namespace MovieAnalytics.Helpers
 {
 
 
-    //  This class defines the mapping rules between your domain models(e.g., Movie)
-    //  and DTOs(e.g., MovieDto and MovieDetailDto).
 
     public class AutoMapperProfiles : Profile
     {
