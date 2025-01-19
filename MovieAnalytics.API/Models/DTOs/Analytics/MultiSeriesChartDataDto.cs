@@ -2,7 +2,7 @@
 {
     public class MultiSeriesChartDataDto
     {
-        public List<string> Labels { get; set; }
-        public List<ChartSeriesDto> SeriesDtos { get; set; }
+        public required List<string> Labels { get; set; }
+        public required List<ChartSeriesDto> SeriesDtos { get; set; }
     }
 }

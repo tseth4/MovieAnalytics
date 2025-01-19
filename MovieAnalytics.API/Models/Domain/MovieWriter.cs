@@ -2,9 +2,9 @@
 {
     public class MovieWriter
     {
-        public string MovieId { get; set; }
-        public Movie Movie { get; set; }
-        public int WriterId { get; set; }
-        public Writer Writer { get; set; }
+        public required string MovieId { get; set; }
+        public required Movie Movie { get; set; }
+        public required int WriterId { get; set; }
+        public required Writer Writer { get; set; }
     }
 }

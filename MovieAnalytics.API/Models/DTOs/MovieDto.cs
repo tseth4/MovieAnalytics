@@ -1,6 +1,4 @@
-﻿using MovieAnalytics.Models.Domain;
-
-namespace MovieAnalytics.Models.DTOs
+﻿namespace MovieAnalytics.Models.DTOs
 {
     public class MovieDto
     {

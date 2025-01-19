@@ -55,7 +55,7 @@ namespace MovieAnalytics.Data
             modelBuilder.Entity<MovieDirector>()
                 .HasKey(md => new { md.MovieId, md.DirectorId });
 
-            
+
             modelBuilder.Entity<MovieDirector>()
                 .HasOne(md => md.Movie) // A MovieDirector is related to one Movie
                 .WithMany(m => m.MovieDirectors) // A Movie can have many MovieDirectors
@@ -73,8 +73,8 @@ namespace MovieAnalytics.Data
             modelBuilder.Entity<MovieWriter>()
                 .HasOne(mw => mw.Movie)
                 .WithMany(m => m.MovieWriters)
-                .HasForeignKey(mw => mw.MovieId);           
-            
+                .HasForeignKey(mw => mw.MovieId);
+
             modelBuilder.Entity<MovieWriter>()
                 .HasOne(mw => mw.Writer)
                 .WithMany(w => w.MovieWriters)

@@ -2,7 +2,7 @@
 {
     public class ChartDataDto
     {
-        public List<string> Labels { get; set; }
-        public List<decimal> Values { get; set; }
+        public required List<string> Labels { get; set; }
+        public required List<decimal> Values { get; set; }
     }
 }

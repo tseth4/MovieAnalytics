@@ -8,8 +8,6 @@ using MovieAnalytics.Models.Domain;
 using MovieAnalytics.Models.DTOs;
 using MovieAnalytics.Repositories.Interfaces;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MovieAnalytics.Repositories
 {
@@ -45,7 +43,7 @@ namespace MovieAnalytics.Repositories
             .Where(m =>
                 m.MovieCountries.Any(mc => mc.Country.Name.Contains(countryName)) &&
                 m.Year.HasValue &&
-                m.Budget.HasValue && m.Budget > 0 && 
+                m.Budget.HasValue && m.Budget > 0 &&
                 m.GrossWorldWide.HasValue && m.GrossWorldWide > 0
                 )
                 .GroupBy(m => m.Year.Value)
@@ -71,7 +69,7 @@ namespace MovieAnalytics.Repositories
                 m.Budget.HasValue &&
                 m.GrossWorldWide.HasValue
                 )
-                .OrderByDescending(m => (double) (m.GrossWorldWide - m.Budget))
+                .OrderByDescending(m => (double)(m.GrossWorldWide - m.Budget))
                 .Take(10)
                 .Select(m => new MovieROIDto
                 {

@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using MovieAnalytics.Data;
 using MovieAnalytics.Models.Domain;
 using MovieAnalytics.Services.Interfaces;
-using System.Formats.Asn1;
 using System.Globalization;
 
 namespace MovieAnalytics.Services
@@ -20,7 +19,7 @@ namespace MovieAnalytics.Services
             {
                 HasHeaderRecord = true,
                 // Case-insensitive, trim spaces
-                PrepareHeaderForMatch = args => args.Header.Trim().ToLowerInvariant(), 
+                PrepareHeaderForMatch = args => args.Header.Trim().ToLowerInvariant(),
                 // Ignore missing headers (optional)
                 HeaderValidated = null
             };
@@ -40,7 +39,7 @@ namespace MovieAnalytics.Services
                 {
                     Console.WriteLine($"Processing movie: {record.Title}");
                     // Add your processing logic here
-         
+
 
                     var movie = new Movie
                     {
@@ -51,7 +50,7 @@ namespace MovieAnalytics.Services
                         Duration = record.Duration,
                         MpaRating = record.MpaRating,
                         Rating = record.Rating,
-                        Votes = this.ParseVotes(record.Votes),
+                        Votes = this.ParseVotes(votes: record.Votes),
                         Budget = record.Budget,
                         GrossWorldWide = record.GrossWorldWide,
                         GrossUsCanada = record.GrossUsCanada,
@@ -63,71 +62,77 @@ namespace MovieAnalytics.Services
 
                     // For Directors
                     await AddRelatedEntities(
-                        movie,
-                        record.ParseArrayString(record.Directors),
-                        context.Directors,
-                        name => new Director { Name = name },
-                        director => new MovieDirector { Director = director },
-                        (m, md) => m.MovieDirectors.Add(md)
+                         movie,
+                         record.ParseArrayString(record.Directors),
+                         context,
+                         context.Directors,
+                         name => new Director { Name = name },
+                         director => new MovieDirector { DirectorId = director.Id, MovieId = movie.Id, Director = director, Movie = movie },
+                         (m, md) => m.MovieDirectors.Add(md)
                     );
-
                     await AddRelatedEntities(
                         movie,
                         record.ParseArrayString(record.Writers),
+                        context,
                         context.Writers,
                         name => new Writer { Name = name },
-                        writer => new MovieWriter { Writer = writer },
+                        writer => new MovieWriter { WriterId = writer.Id, MovieId = movie.Id, Writer = writer, Movie = movie },
                         (m, mw) => m.MovieWriters.Add(mw)
                     );
 
                     await AddRelatedEntities(
                         movie,
                         record.ParseArrayString(record.Stars),
+                        context,
                         context.Stars,
                         name => new Star { Name = name },
-                        star => new MovieStar { Star = star },
+                        star => new MovieStar { StarId = star.Id, MovieId = movie.Id, Star = star, Movie = movie },
                         (m, ms) => m.MovieStars.Add(ms)
                     );
                     // continue
                     await AddRelatedEntities(
                         movie,
                         record.ParseArrayString(record.Genres),
+                        context,
                         context.Genres,
                         name => new Genre { Name = name },
-                        genre => new MovieGenre { Genre = genre },
+                        genre => new MovieGenre { GenreId = genre.Id, MovieId = movie.Id, Genre = genre, Movie = movie },
                         (m, mg) => m.MovieGenres.Add(mg)
                     );
 
                     await AddRelatedEntities(
-                            movie,
-                            record.ParseArrayString(record.Countries),
-                            context.Countries,
-                            name => new Country { Name = name },
-                            country => new MovieCountry { Country = country },
-                            (m, mc) => m.MovieCountries.Add(mc)
-                        );
+                         movie,
+                         record.ParseArrayString(record.Countries),
+                         context,
+                         context.Countries,
+                         name => new Country { Name = name },
+                         country => new MovieCountry { CountryId = country.Id, MovieId = movie.Id, Country = country, Movie = movie },
+                         (m, mc) => m.MovieCountries.Add(mc)
+                     );
 
                     await AddRelatedEntities(
-                            movie,
-                            record.ParseArrayString(record.ProductionCompanies),
-                            context.ProductionCompanies,
-                            name => new ProductionCompany { Name = name },
-                            productionCompany => new MovieProductionCompany { ProductionCompany = productionCompany },
-                            (m, mpc) => m.MovieProductionCompanies.Add(mpc)
-                        );
+                        movie,
+                        record.ParseArrayString(record.ProductionCompanies),
+                        context,
+                        context.ProductionCompanies,
+                        name => new ProductionCompany { Name = name },
+                        productionCompany => new MovieProductionCompany { ProductionCompanyId = productionCompany.Id, MovieId = movie.Id, ProductionCompany = productionCompany, Movie = movie },
+                        (m, mpc) => m.MovieProductionCompanies.Add(mpc)
+                    );
 
                     await AddRelatedEntities(
-                            movie,
-                            record.ParseArrayString(record.Languages),
-                            context.Languages,
-                            name => new Language { Name = name },
-                            lang => new MovieLanguage { Language = lang },
-                            (m, ml) => m.MovieLanguages.Add(ml)
-                        );
+                        movie,
+                        record.ParseArrayString(record.Languages),
+                        context,
+                        context.Languages,
+                        name => new Language { Name = name },
+                        lang => new MovieLanguage { LanguageId = lang.Id, MovieId = movie.Id, Language = lang, Movie = movie },
+                        (m, ml) => m.MovieLanguages.Add(ml)
+                    );
 
                     await context.Movies.AddAsync(movie);
 
-                    
+
                 }
             }
             catch (HeaderValidationException ex)
@@ -139,12 +144,12 @@ namespace MovieAnalytics.Services
                 Console.WriteLine($"Error during data import: {ex.Message}");
             }
 
-     
+
 
             await context.SaveChangesAsync();
         }
 
-        private  int ParseVotes(string votes)
+        private int ParseVotes(string votes)
         {
             if (string.IsNullOrWhiteSpace(votes))
             {
@@ -167,7 +172,7 @@ namespace MovieAnalytics.Services
             if (votes.EndsWith("M", StringComparison.OrdinalIgnoreCase))
             {
                 votes = votes.TrimEnd('M', 'm');
-                if (decimal.TryParse (votes, out decimal number))
+                if (decimal.TryParse(votes, out decimal number))
                 {
                     return (int)(number * 1000000);
                 }
@@ -180,6 +185,7 @@ namespace MovieAnalytics.Services
         private async Task AddRelatedEntities<TEntity, TJunction>(
             Movie movie,
             string[] names,
+            DbContext context, // Added DbContext as a parameter
             DbSet<TEntity> dbSet,
             Func<string, TEntity> createEntity,
             Func<TEntity, TJunction> createJunction,
@@ -191,15 +197,23 @@ namespace MovieAnalytics.Services
             foreach (var name in names)
             {
                 var entity = await dbSet
+                    .AsNoTracking() // Improves performance by not tracking if entity exists
                     .FirstOrDefaultAsync(e => EF.Property<string>(e, "Name") == name);
                 if (entity == null)
                 {
-
+                    // Create a new entity and save it to the database to generate the ID
                     entity = createEntity(name);
                     dbSet.Add(entity);
+                    //await context.SaveChangesAsync(); // Ensure ID is generated
+                }
+                else
+                {
+                    dbSet.Attach(entity);
                 }
 
                 var junction = createJunction(entity);
+
+
                 addJunction(movie, junction);
             }
         }

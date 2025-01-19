@@ -76,7 +76,7 @@ namespace MovieAnalytics.Services
         public int? Oscars { get; set; }
 
         // Helper method to parse array strings
-        public string[] ParseArrayString(string arrayString)
+        public string[] ParseArrayString(string? arrayString)
         {
             if (string.IsNullOrEmpty(arrayString)) return Array.Empty<string>();
 

@@ -1,7 +1,6 @@
 ﻿using MovieAnalytics.API.Models.DTOs.Analytics;
 using MovieAnalytics.API.Services.Interfaces;
 using MovieAnalytics.Repositories.Interfaces;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MovieAnalytics.API.Services
 {
@@ -20,7 +19,8 @@ namespace MovieAnalytics.API.Services
         }
 
         public async Task<ChartDataDto> GetTopProfitableMovies(string countryName)
-        {   var movieRoiData = await movieRepository.GetTopProfitableMovies(countryName);
+        {
+            var movieRoiData = await movieRepository.GetTopProfitableMovies(countryName);
             return new ChartDataDto
             {
                 Labels = movieRoiData.Select(m => m.Title).ToList(),

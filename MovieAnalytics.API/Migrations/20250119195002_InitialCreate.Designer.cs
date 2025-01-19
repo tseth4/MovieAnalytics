@@ -10,8 +10,8 @@ using MovieAnalytics.Data;
 namespace MovieAnalytics.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250119024003_InitialMigrationSqlite")]
-    partial class InitialMigrationSqlite
+    [Migration("20250119195002_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

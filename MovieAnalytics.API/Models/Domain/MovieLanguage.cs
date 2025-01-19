@@ -2,9 +2,9 @@
 {
     public class MovieLanguage
     {
-        public string MovieId { get; set; }
-        public Movie Movie { get; set; }
-        public int LanguageId { get; set; }
-        public Language Language { get; set; }
+        public required string MovieId { get; set; }
+        public required Movie Movie { get; set; }
+        public required int LanguageId { get; set; }
+        public required Language Language { get; set; }
     }
 }

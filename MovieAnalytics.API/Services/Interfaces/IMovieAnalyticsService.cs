@@ -1,5 +1,4 @@
 ﻿using MovieAnalytics.API.Models.DTOs.Analytics;
-using System.Threading.Tasks;
 
 namespace MovieAnalytics.API.Services.Interfaces
 {
