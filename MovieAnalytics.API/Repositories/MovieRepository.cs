@@ -21,10 +21,11 @@ namespace MovieAnalytics.Repositories
 
             if (!string.IsNullOrEmpty(movieParams.SearchTerm))
             {
+                var searchTerm = movieParams.SearchTerm.ToLower();
                 query = query.Where(m =>
-                    m.Title.Contains(movieParams.SearchTerm) ||
-                    m.MovieDirectors.Any(md => md.Director.Name.Contains(movieParams.SearchTerm)) ||
-                    m.MovieGenres.Any(mg => mg.Genre.Name.Contains(movieParams.SearchTerm))
+                    m.Title.Contains(searchTerm) ||
+                    m.MovieDirectors.Any(md => md.Director.Name.Contains(searchTerm)) ||
+                    m.MovieGenres.Any(mg => mg.Genre.Name.Contains(searchTerm))
                 );
             }
 
