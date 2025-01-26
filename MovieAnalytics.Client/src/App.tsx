@@ -12,7 +12,7 @@ import Movies from "./views/movies/Movies"
 
 
 function App() {
-  const { movies, currentPage, totalPages, loading, error, fetchMovies } = useMovies()
+  const { movies, currentPage, fetchMovies } = useMovies()
   useEffect(() => {
     fetchMovies(currentPage, { searchTerm: "" })
   }, [currentPage])
