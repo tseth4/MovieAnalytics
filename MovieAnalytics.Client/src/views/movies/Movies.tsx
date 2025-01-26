@@ -1,21 +1,30 @@
+import { Pagination } from "@/components/Pagination"
+import { useMovies } from "@/context/MoviesContext"
 import { useEffect, useState } from "react"
 import { MovieCard } from "./MovieCard"
-import { useMovies } from "@/context/MoviesContext"
-import { Pagination } from "@/components/Pagination"
 // import debounce from 'lodash/debounce'
 import { Input } from "@/components/ui/input"
+import { Movie } from "@/types/movie"
 
+interface MoviesProps {
+  firstMovies: Movie[]
+}
 
-
-export default function Movies() {
+export default function Movies({ firstMovies }: MoviesProps) {
   const { movies, currentPage, totalPages, loading, error, fetchMovies } = useMovies()
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isInitialRender, setIsInitialRender] = useState(true);
+
 
 
 
   useEffect(() => {
-    fetchMovies(currentPage, { searchTerm })
-  }, [currentPage])
+    if (isInitialRender) {
+      setIsInitialRender(false); // After the first render, mark initial render as complete
+    } else {
+      fetchMovies(currentPage, { searchTerm });
+    }
+  }, [currentPage, searchTerm, fetchMovies])
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -34,6 +43,8 @@ export default function Movies() {
       handleSearchClick();
     }
   };
+  const displayedMovies = isInitialRender ? firstMovies : movies;
+
 
   if (loading) return <div>Loading...</div>
   if (error) return <div>Error: {error}</div>
@@ -55,9 +66,14 @@ export default function Movies() {
             className="bg-blue-500 text-white rounded"
           >Search</button>
         </div>
+        {!loading && !error && displayedMovies.length === 0 && (
+          <div className="text-center text-gray-500">
+            No movies found for "{searchTerm}"
+          </div>
+        )}
 
         <div className="flex flex-col gap-4">
-          {movies.map(movie => (
+          {displayedMovies.map(movie => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
