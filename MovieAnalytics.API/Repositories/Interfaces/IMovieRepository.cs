@@ -1,7 +1,7 @@
-﻿using MovieAnalytics.API.Models.DTOs.Analytics;
+﻿using MovieAnalytics.API.DTOs;
+using MovieAnalytics.API.DTOs.Analytics;
+using MovieAnalytics.API.Entities;
 using MovieAnalytics.Helpers;
-using MovieAnalytics.Models.Domain;
-using MovieAnalytics.Models.DTOs;
 
 namespace MovieAnalytics.Repositories.Interfaces
 {

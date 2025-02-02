@@ -1,15 +1,15 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using MovieAnalytics.API.Models.DTOs.Analytics;
-using MovieAnalytics.Data;
+using MovieAnalytics.API.Data;
+using MovieAnalytics.API.DTOs;
+using MovieAnalytics.API.DTOs.Analytics;
+using MovieAnalytics.API.Entities;
 using MovieAnalytics.Helpers;
-using MovieAnalytics.Models.Domain;
-using MovieAnalytics.Models.DTOs;
 using MovieAnalytics.Repositories.Interfaces;
-using System.Diagnostics;
 
-namespace MovieAnalytics.Repositories
+namespace MovieAnalytics.API.Repositories
 {
     public class MovieRepository(ApplicationDbContext context, IMapper mapper, ILogger<MovieRepository> logger) : IMovieRepository
     {

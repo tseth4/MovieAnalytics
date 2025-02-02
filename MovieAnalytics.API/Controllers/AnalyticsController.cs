@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieAnalytics.API.Models.DTOs.Analytics;
+using MovieAnalytics.API.DTOs.Analytics;
 using MovieAnalytics.API.Services.Interfaces;
 
 namespace MovieAnalytics.API.Controllers

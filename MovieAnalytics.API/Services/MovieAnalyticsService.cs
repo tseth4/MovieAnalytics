@@ -1,4 +1,4 @@
-﻿using MovieAnalytics.API.Models.DTOs.Analytics;
+﻿using MovieAnalytics.API.DTOs.Analytics;
 using MovieAnalytics.API.Services.Interfaces;
 using MovieAnalytics.Repositories.Interfaces;
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MovieAnalytics.API.DTOs;
+using MovieAnalytics.API.Entities;
 using MovieAnalytics.Extensions;
 using MovieAnalytics.Helpers;
-using MovieAnalytics.Models.Domain;
-using MovieAnalytics.Models.DTOs;
 using MovieAnalytics.Repositories.Interfaces;
 
 namespace MovieAnalytics.Controllers

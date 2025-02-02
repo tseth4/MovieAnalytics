@@ -1,12 +1,13 @@
-﻿using CsvHelper;
+﻿using System.Globalization;
+using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.EntityFrameworkCore;
-using MovieAnalytics.Data;
-using MovieAnalytics.Models.Domain;
+using MovieAnalytics.API.Data;
+using MovieAnalytics.API.Entities;
+using MovieAnalytics.Services;
 using MovieAnalytics.Services.Interfaces;
-using System.Globalization;
 
-namespace MovieAnalytics.Services
+namespace MovieAnalytics.API.Services
 {
     public class MovieImportService(ApplicationDbContext context) : IMovieImportService
     {

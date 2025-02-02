@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MovieAnalytics.Data;
+using MovieAnalytics.API.Data;
+using MovieAnalytics.API.Entities;
+using MovieAnalytics.API.Extensions;
 using MovieAnalytics.Extensions;
 using MovieAnalytics.Services.Interfaces;
 
@@ -12,6 +15,11 @@ builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
+// builder.Services.AddIdentity<AppUser, IdentityRole>()
+//     .AddEntityFrameworkStores<ApplicationDbContext>()
+//     .AddDefaultTokenProviders();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -57,10 +65,10 @@ app.MapFallbackToFile("index.html");
 //     var services = scope.ServiceProvider;
 //     var context = services.GetRequiredService<ApplicationDbContext>();
 //     var movieImportService = services.GetRequiredService<IMovieImportService>();
-
+//
 //     // Ensure database is created/migrated
 //     await context.Database.MigrateAsync();
-
+//
 //     // Check if database is empty before importing
 //     if (!context.Movies.Any())
 //     {
@@ -89,17 +97,17 @@ using (var scope = app.Services.CreateScope())
         await context.Database.MigrateAsync();
         Console.WriteLine("Migrations applied successfully.");
 
-        //if (!context.Movies.Any())
-        //{
-        //    Console.WriteLine("Seeding database...");
-        //    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "movies.csv");
-        //    await movieImportService.ImportMoviesFromCsv(filePath);
-        //    Console.WriteLine("Database seeding completed successfully.");
-        //}
-        //else
-        //{
-        //    Console.WriteLine("Database already contains data. Skipping seeding.");
-        //}
+        if (!context.Movies.Any())
+        {
+            Console.WriteLine("Seeding database...");
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "movies.csv");
+            await movieImportService.ImportMoviesFromCsv(filePath);
+            Console.WriteLine("Database seeding completed successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Database already contains data. Skipping seeding.");
+        }
     }
     catch (Exception ex)
     {

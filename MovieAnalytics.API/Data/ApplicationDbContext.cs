@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MovieAnalytics.Models.Domain;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using MovieAnalytics.API.Entities;
 
-namespace MovieAnalytics.Data
+namespace MovieAnalytics.API.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<AppUser>(options)
     {
 
         private static readonly ILoggerFactory DbLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });

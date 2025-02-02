@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using MovieAnalytics.Models.Domain;
-using MovieAnalytics.Models.DTOs;
+using MovieAnalytics.API.DTOs;
+using MovieAnalytics.API.Entities;
 
 namespace MovieAnalytics.Helpers
 {
@@ -48,7 +48,12 @@ namespace MovieAnalytics.Helpers
                 .ForMember(dest => dest.Genres, opt =>
                     opt.MapFrom(src => src.MovieGenres
                         .Select(mg => mg.Genre.Name)));
+            
+            // Map RegisterDto → AppUser
+            CreateMap<RegisterDto, AppUser>();
 
+            // Map AppUser → UserDto
+            CreateMap<AppUser, UserDto>();
             //// If you need to map in reverse direction
             //CreateMap<MovieCreateDto, Movie>();
             //CreateMap<MovieUpdateDto, Movie>();
