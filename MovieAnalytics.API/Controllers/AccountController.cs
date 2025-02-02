@@ -11,9 +11,6 @@ namespace MovieAnalytics.API.Controllers;
 
 public class AccountController(UserManager<AppUser> userManager, ITokenService tokenService, IMapper mapper) : BaseApiController
 {
-    // Register
-    // Login
-    // UserExists
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {

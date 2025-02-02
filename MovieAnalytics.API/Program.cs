@@ -16,9 +16,6 @@ builder.Logging.AddDebug();
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
-// builder.Services.AddIdentity<AppUser, IdentityRole>()
-//     .AddEntityFrameworkStores<ApplicationDbContext>()
-//     .AddDefaultTokenProviders();
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -40,9 +37,6 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-
-
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -52,38 +46,17 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
+app.UseRouting();
 
+// ✅ Handles Bearer tokens
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllers();
 
+// app.MapFallbackToFile("index.html");
 app.MapFallbackToFile("index.html");
 
-
-// using (var scope = app.Services.CreateScope())
-// {
-//     var services = scope.ServiceProvider;
-//     var context = services.GetRequiredService<ApplicationDbContext>();
-//     var movieImportService = services.GetRequiredService<IMovieImportService>();
-//
-//     // Ensure database is created/migrated
-//     await context.Database.MigrateAsync();
-//
-//     // Check if database is empty before importing
-//     if (!context.Movies.Any())
-//     {
-//         try
-//         {
-//             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "movies.csv");
-//             await movieImportService.ImportMoviesFromCsv(filePath);
-//             Console.WriteLine("Data import completed successfully");
-//         }
-//         catch (Exception ex)
-//         {
-//             Console.WriteLine($"Error during data import: {ex.Message}");
-//         }
-//     }
-// }
 
 using (var scope = app.Services.CreateScope())
 {

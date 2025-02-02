@@ -5,12 +5,11 @@ using MovieAnalytics.Extensions;
 using MovieAnalytics.Helpers;
 using MovieAnalytics.Repositories.Interfaces;
 
-namespace MovieAnalytics.Controllers
+namespace MovieAnalytics.API.Controllers
 {
 
     [ApiController]
-    [Route("api/[controller]")]
-    public class MoviesController(IMovieRepository movieRepository, ILogger<MoviesController> logger) : ControllerBase
+    public class MoviesController(IMovieRepository movieRepository, ILogger<MoviesController> logger) : BaseApiController
     {
 
         [HttpGet]

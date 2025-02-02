@@ -4,9 +4,9 @@ using MovieAnalytics.API.Services.Interfaces;
 
 namespace MovieAnalytics.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class AnalyticsController(IMovieAnalyticsService movieAnalyticsService) : ControllerBase
+    // [ApiController]
+    // [Route("api/[controller]")]
+    public class AnalyticsController(IMovieAnalyticsService movieAnalyticsService) : BaseApiController
     {
 
         [HttpGet("budget-vs-gross/{countryName}")]
