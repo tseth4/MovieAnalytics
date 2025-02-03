@@ -25,6 +25,7 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
         
         return new UserDto
         {
+            Id = user.Id,
             Username = user.UserName,
             Token = await tokenService.CreateToken(user),
             KnownAs = user.KnownAs,
@@ -45,6 +46,7 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
 
         return new UserDto
         {
+            Id = user.Id,
             Username = user.UserName,
             Token = await tokenService.CreateToken(user),
             KnownAs = user.KnownAs

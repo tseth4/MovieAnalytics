@@ -12,19 +12,14 @@ public class LikesRepository(ApplicationDbContext context, IMapper mapper, ILogg
 {
     public async Task<Result<Unit>> AddLike(string? userId, string movieId)
     {
-        // Log the incoming IDs
-        Console.WriteLine($"Attempting to add like - UserId: {userId}, MovieId: {movieId}");
 
-        // First verify the movie exists
         var movie = await context.Movies.FindAsync(movieId);
-        Console.WriteLine($"Movie exists? {movie != null}");
         if (movie == null)
             return Result<Unit>.Failure($"Movie with ID {movieId} not found");
 
         // Then check for existing like
         var existingLike = await context.MovieLikes
             .FirstOrDefaultAsync(x => x.SourceUserId == userId && x.MovieId == movieId);
-        Console.WriteLine($"Like already exists? {existingLike != null}");
             
         if (existingLike != null)
             return Result<Unit>.Failure("You have already liked this movie");
@@ -49,18 +44,71 @@ public class LikesRepository(ApplicationDbContext context, IMapper mapper, ILogg
         } 
     }
 
-    public Task<PagedList<MovieDto>> GetUserLikes(string? userId, PaginationParams paginationParams)
+    public async Task<PagedList<MovieDto>> GetUserLikes(string? userId, PaginationParams paginationParams)
     {
-        throw new NotImplementedException();
+        var query = context.MovieLikes
+            .Where(ml => ml.SourceUserId == userId)
+            .Select(like => new MovieDto
+            {
+                Id = like.LikedMovie.Id,
+                Title = like.LikedMovie.Title,
+                Year = like.LikedMovie.Year,
+                Duration = like.LikedMovie.Duration,
+                MpaRating = like.LikedMovie.MpaRating,
+                Rating = like.LikedMovie.Rating,
+                // ... other movie properties you want to include
+            })
+            .AsNoTracking();
+
+        return await PagedList<MovieDto>.CreateAsync(query, paginationParams.PageNumber, paginationParams.PageSize);
     }
 
-    public Task<PagedList<UserDto>> GetMovieLikes(string movieId, PaginationParams paginationParams)
+    public async Task<PagedList<UserDto>> GetMovieLikes(string movieId, PaginationParams paginationParams)
     {
-        throw new NotImplementedException();
+        var query = context.MovieLikes
+            .Where(like => like.MovieId == movieId)
+            .Select(like => new UserDto
+            {
+                Id = like.SourceUser.Id,
+                Username = like.SourceUser.UserName,
+                KnownAs = like.SourceUser.KnownAs,
+            })
+            .AsNoTracking();
+
+        return await PagedList<UserDto>.CreateAsync(query, paginationParams.PageNumber, paginationParams.PageSize);
     }
 
-    public Task<Result<Unit>> RemoveLike(string? userId, string movieId)
+    public async Task<Result<Unit>> RemoveLike(string? userId, string movieId)
     {
-        throw new NotImplementedException();
+        if (userId == null) 
+            return Result<Unit>.Failure("User ID is null");
+
+        // First verify user exists
+        var user = await context.Users.FindAsync(userId);
+        if (user == null)
+            return Result<Unit>.Failure("User not found");
+        
+        // Then verify movie exists
+        var movie = await context.Movies.FindAsync(movieId);
+        if (movie == null)
+            return Result<Unit>.Failure("Movie not found");
+
+        var like = await context.MovieLikes
+            .FirstOrDefaultAsync(l => l.SourceUserId == userId && l.MovieId == movieId);
+
+        if (like == null)
+            return Result<Unit>.Failure("Like not found");
+
+        context.MovieLikes.Remove(like);
+
+        try 
+        {
+            await context.SaveChangesAsync();
+            return Result<Unit>.Success(Unit.Value);
+        }
+        catch (Exception ex)
+        {
+            return Result<Unit>.Failure($"Failed to remove like: {ex.Message}");
+        }
     }
 }

@@ -53,7 +53,8 @@ public class LikesController(
 
         return Ok();
     }
-
+    
+    [Authorize]
     [HttpGet("user")]
     public async Task<ActionResult<IEnumerable<MovieDto>>> GetUserLikes([FromQuery] PaginationParams paginationParams)
     {
