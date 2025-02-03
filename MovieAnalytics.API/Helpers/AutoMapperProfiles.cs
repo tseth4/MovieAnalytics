@@ -32,7 +32,14 @@ namespace MovieAnalytics.Helpers
                         .Select(mpc => mpc.ProductionCompany.Name)))
                 .ForMember(dest => dest.Languages, opt =>
                     opt.MapFrom(src => src.MovieLanguages
-                        .Select(ml => ml.Language.Name)));
+                        .Select(ml => ml.Language.Name)))
+                .ForMember(dest => dest.LikedBy, opt =>
+                    opt.MapFrom(src => src.LikedByUsers.Select(ml => new LikerDto
+                    {
+                        Id = ml.SourceUserId,
+                        Username = ml.SourceUser.UserName,
+                        KnownAs = ml.SourceUser.KnownAs,
+                    })));
 
             // For detailed view
             CreateMap<Movie, MovieDetailDto>()

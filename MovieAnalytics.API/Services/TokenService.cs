@@ -18,7 +18,7 @@ public class TokenService(IConfiguration config, UserManager<AppUser> userManage
 
         if (user.UserName == null) throw new Exception("No Username for user");
         var claims = new List<Claim>{
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.NameIdentifier, user.Id),
             new(ClaimTypes.Name, user.UserName)
         };
 

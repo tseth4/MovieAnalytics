@@ -386,6 +386,21 @@ namespace MovieAnalytics.API.Migrations
                     b.ToTable("MovieLanguages");
                 });
 
+            modelBuilder.Entity("MovieAnalytics.API.Entities.MovieLike", b =>
+                {
+                    b.Property<string>("SourceUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MovieId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("SourceUserId", "MovieId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MovieLikes");
+                });
+
             modelBuilder.Entity("MovieAnalytics.API.Entities.MovieProductionCompany", b =>
                 {
                     b.Property<string>("MovieId")
@@ -603,6 +618,25 @@ namespace MovieAnalytics.API.Migrations
                     b.Navigation("Movie");
                 });
 
+            modelBuilder.Entity("MovieAnalytics.API.Entities.MovieLike", b =>
+                {
+                    b.HasOne("MovieAnalytics.API.Entities.Movie", "LikedMovie")
+                        .WithMany("LikedByUsers")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieAnalytics.API.Entities.AppUser", "SourceUser")
+                        .WithMany("LikedMovies")
+                        .HasForeignKey("SourceUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LikedMovie");
+
+                    b.Navigation("SourceUser");
+                });
+
             modelBuilder.Entity("MovieAnalytics.API.Entities.MovieProductionCompany", b =>
                 {
                     b.HasOne("MovieAnalytics.API.Entities.Movie", "Movie")
@@ -660,6 +694,11 @@ namespace MovieAnalytics.API.Migrations
                     b.Navigation("Writer");
                 });
 
+            modelBuilder.Entity("MovieAnalytics.API.Entities.AppUser", b =>
+                {
+                    b.Navigation("LikedMovies");
+                });
+
             modelBuilder.Entity("MovieAnalytics.API.Entities.Country", b =>
                 {
                     b.Navigation("MovieCountries");
@@ -682,6 +721,8 @@ namespace MovieAnalytics.API.Migrations
 
             modelBuilder.Entity("MovieAnalytics.API.Entities.Movie", b =>
                 {
+                    b.Navigation("LikedByUsers");
+
                     b.Navigation("MovieCountries");
 
                     b.Navigation("MovieDirectors");

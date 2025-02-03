@@ -25,6 +25,7 @@ namespace MovieAnalytics.API.Extensions
             });
             services.AddScoped<IMovieRepository, MovieRepository>();
             services.AddScoped<IMovieImportService, MovieImportService>();
+            services.AddScoped<ILikesRepository, LikesRepository>();
             services.AddScoped<IMovieAnalyticsService, MovieAnalyticsService>();
             services.AddScoped<ITokenService, TokenService>();
 

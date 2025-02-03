@@ -1,4 +1,6 @@
-﻿namespace MovieAnalytics.API.DTOs
+﻿using MovieAnalytics.API.Entities;
+
+namespace MovieAnalytics.API.DTOs
 {
     public class MovieDto
     {
@@ -27,6 +29,8 @@
         public List<string> CountryNames { get; set; }
         public List<string> ProductionCompanies { get; set; }
         public List<string> Languages { get; set; }
+        
+        public List<LikerDto> LikedBy { get; set; }
 
 
 

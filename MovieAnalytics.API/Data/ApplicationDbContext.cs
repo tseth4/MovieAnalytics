@@ -25,6 +25,7 @@ namespace MovieAnalytics.API.Data
         public DbSet<MovieCountry> MovieCountries { get; set; }
         public DbSet<MovieProductionCompany> MovieProductionCompanies { get; set; }
         public DbSet<MovieLanguage> MovieLanguages { get; set; }
+        public DbSet<MovieLike> MovieLikes { get; set; }
         // Add other DbSets
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -150,7 +151,21 @@ namespace MovieAnalytics.API.Data
                 .HasOne(ml => ml.Language)
                 .WithMany(l => l.MovieLanguages)
                 .HasForeignKey(ml => ml.LanguageId);
-
+            
+            // MovieLike
+            modelBuilder.Entity<MovieLike>()
+                .HasKey(ml => new { ml.SourceUserId, ml.MovieId });
+            
+            modelBuilder.Entity<MovieLike>()
+                .HasOne(ml => ml.SourceUser)
+                .WithMany(m => m.LikedMovies)
+                .HasForeignKey(ml => ml.SourceUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<MovieLike>()
+                .HasOne(ml => ml.LikedMovie)
+                .WithMany(m => m.LikedByUsers)
+                .HasForeignKey(ml => ml.MovieId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

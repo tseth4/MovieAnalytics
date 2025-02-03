@@ -26,5 +26,7 @@
         public ICollection<MovieCountry> MovieCountries { get; set; } = [];
         public ICollection<MovieProductionCompany> MovieProductionCompanies { get; set; } = [];
         public ICollection<MovieLanguage> MovieLanguages { get; set; } = [];
+        public ICollection<MovieLike> LikedByUsers { get; set; } = [];
+
     }
 }

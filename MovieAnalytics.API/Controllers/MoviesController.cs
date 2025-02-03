@@ -8,7 +8,6 @@ using MovieAnalytics.Repositories.Interfaces;
 namespace MovieAnalytics.API.Controllers
 {
 
-    [ApiController]
     public class MoviesController(IMovieRepository movieRepository, ILogger<MoviesController> logger) : BaseApiController
     {
 
@@ -19,7 +18,7 @@ namespace MovieAnalytics.API.Controllers
             logger.LogInformation("Fetching movies with parameters: {MovieParams}", movieParams);
 
             var movies = await movieRepository.GetAllAsync(movieParams);
-            if (movies == null || !movies.Any())
+            if (!movies.Any())
             {
                 logger.LogWarning("No movies found.");
                 return NotFound("No movies found.");

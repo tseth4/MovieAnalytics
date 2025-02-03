@@ -9,17 +9,7 @@ namespace MovieAnalytics.API.Controllers;
 
 public class UsersController(UserManager<AppUser> userManager) : BaseApiController
 {
-    // Useses MemberDto
-    // GetUsers, GetUser, UpdateUser,
-    // Later: AddPhoto, SetMainPhoto, DeletePhoto
-    // UsersController  ->
-    
-    [HttpGet("test")]
-    public IActionResult Test()
-    {
-        return Ok("Route is working!");
-    }
-    
+
     [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
