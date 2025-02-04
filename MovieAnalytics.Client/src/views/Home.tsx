@@ -1,4 +1,3 @@
-import SlidingBackground from '@/components/sliding-background/SlidingBackground';
 import { useNavigate } from 'react-router-dom';
 import "./homestyles.css";
 
@@ -17,8 +16,7 @@ export default function Home() {
 
   return (
     <>
-      <SlidingBackground images={movieImages} interval={5000} />
-
+      {/* <SlidingBackground images={movieImages} interval={5000} /> */}
       <div className="hero">
         <div className="hero-content">
           <h1>Movie Analytics</h1>

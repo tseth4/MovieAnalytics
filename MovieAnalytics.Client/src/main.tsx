@@ -3,16 +3,18 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 
 import App from './App.tsx'
+import { AuthProvider } from './context/AuthContext.tsx'
 import { MoviesProvider } from './context/MoviesContext.tsx'
 import './index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <MoviesProvider>
-
-        <App />
-      </MoviesProvider>
+      <AuthProvider>
+        <MoviesProvider>
+          <App />
+        </MoviesProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )

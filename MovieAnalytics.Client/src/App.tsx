@@ -9,6 +9,7 @@ import Analytics from "./views/analytics/Analytics"
 import Home from "./views/Home"
 import MovieDetail from './views/movies/MovieDetail'
 import Movies from "./views/movies/Movies"
+import { Profile } from "./views/profile/Profile"
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/movies" element={<Movies firstMovies={movies} />} />
                 <Route path="/movies/:id" element={<MovieDetail />} />
                 <Route path="/analytics" element={<Analytics />} />
+                <Route path="/profile" element={<Profile />} />
               </Routes>
             </Layout>
         </AnalyticsProvider>
