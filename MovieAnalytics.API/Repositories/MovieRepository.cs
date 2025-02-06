@@ -11,16 +11,16 @@ using MovieAnalytics.Repositories.Interfaces;
 
 namespace MovieAnalytics.API.Repositories
 {
-    public class MovieRepository(ApplicationDbContext context, IMapper mapper, ILogger<MovieRepository> logger) : IMovieRepository
+    public class MovieRepository(ApplicationDbContext context, IMapper mapper, ILogger<MovieRepository> logger)
+        : IMovieRepository
     {
-
         public async Task<PagedList<MovieDto>> GetAllAsync(MovieParams movieParams)
         {
             var searchTerm = movieParams.SearchTerm?.ToLower() ?? "";
 
             var query = context.Movies.AsQueryable();
 
-            if (!string.IsNullOrEmpty(movieParams.SearchTerm))
+            if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(m =>
                     EF.Functions.Like(m.Title.ToLower(), $"%{searchTerm}%") ||
@@ -29,15 +29,8 @@ namespace MovieAnalytics.API.Repositories
                 );
             }
 
-
-            // Apply Pagination BEFORE projection to DTO
-            var pagedQuery = query
-                .OrderBy(m => m.Title)  // Optional: Order for consistency
-                .Skip((movieParams.PageNumber - 1) * movieParams.PageSize)
-                .Take(movieParams.PageSize);
-
             return await PagedList<MovieDto>.CreateAsync(
-                pagedQuery.ProjectTo<MovieDto>(mapper.ConfigurationProvider),
+                query.ProjectTo<MovieDto>(mapper.ConfigurationProvider),
                 movieParams.PageNumber,
                 movieParams.PageSize
             );
@@ -48,11 +41,11 @@ namespace MovieAnalytics.API.Repositories
             var stopwatch = Stopwatch.StartNew();
 
             var result = await context.Movies
-            .Where(m =>
-                m.MovieCountries.Any(mc => mc.Country.Name.Contains(countryName)) &&
-                m.Year.HasValue &&
-                m.Budget.HasValue && m.Budget > 0 &&
-                m.GrossWorldWide.HasValue && m.GrossWorldWide > 0
+                .Where(m =>
+                    m.MovieCountries.Any(mc => mc.Country.Name.Contains(countryName)) &&
+                    m.Year.HasValue &&
+                    m.Budget.HasValue && m.Budget > 0 &&
+                    m.GrossWorldWide.HasValue && m.GrossWorldWide > 0
                 )
                 .GroupBy(m => m.Year.Value)
                 .Select(g => new YearlyAggregationDto
@@ -74,8 +67,8 @@ namespace MovieAnalytics.API.Repositories
 
             var result = await context.Movies
                 .Where(m => m.MovieCountries.Any(mc => mc.Country.Name.Contains(countryName)) &&
-                m.Budget.HasValue &&
-                m.GrossWorldWide.HasValue
+                            m.Budget.HasValue &&
+                            m.GrossWorldWide.HasValue
                 )
                 .OrderByDescending(m => (double)(m.GrossWorldWide - m.Budget))
                 .Take(10)
@@ -89,10 +82,9 @@ namespace MovieAnalytics.API.Repositories
             stopwatch.Stop();
             logger.LogInformation($"GetTopProfitableMovies executed in {stopwatch.ElapsedMilliseconds} ms.");
             return result;
-
         }
 
-        public async Task<MovieDto?> GetByIdAsync(string id)  // Note the nullable return type
+        public async Task<MovieDto?> GetByIdAsync(string id) // Note the nullable return type
         {
             var query = context.Movies.AsQueryable();
 
@@ -120,7 +112,5 @@ namespace MovieAnalytics.API.Repositories
         {
             throw new NotImplementedException();
         }
-
-
     }
 }
