@@ -13,6 +13,7 @@ interface MoviesProps {
 export default function Movies({ firstMovies }: MoviesProps) {
   const { movies, currentPage, totalPages, loading, error, fetchMovies } = useMovies()
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [isInitialRender, setIsInitialRender] = useState(true);
 
 
@@ -22,26 +23,27 @@ export default function Movies({ firstMovies }: MoviesProps) {
     if (isInitialRender) {
       setIsInitialRender(false); // After the first render, mark initial render as complete
     } else {
-      fetchMovies(currentPage, { searchTerm });
+      fetchMovies(currentPage, { searchTerm: searchQuery });
     }
-  }, [currentPage, searchTerm, fetchMovies])
+  }, [currentPage, searchQuery, fetchMovies])
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSearchClick = () => {
-    fetchMovies(1, { searchTerm }); // Reset to page 1 when searching
+  const handleSearchSubmit = () => {
+    setSearchQuery(searchTerm); // Only update query when Enter is pressed or button is clicked
   };
 
-  const handlePageChange = (page: number) => {
-    fetchMovies(page, { searchTerm });
-  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleSearchClick();
+      handleSearchSubmit();
     }
+  };
+
+  const handlePageChange = (page: number) => {
+    fetchMovies(page, { searchTerm: searchQuery });
   };
   const displayedMovies = isInitialRender ? firstMovies : movies;
 
@@ -62,7 +64,7 @@ export default function Movies({ firstMovies }: MoviesProps) {
             className="border rounded h-full"
           />
           <button
-            onClick={handleSearchClick}
+            onClick={handleSearchSubmit}
             className="bg-blue-500 text-white rounded"
           >Search</button>
         </div>
