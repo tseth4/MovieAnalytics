@@ -23,12 +23,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy", policy =>
-    {
-        policy.AllowAnyHeader()
-              .AllowAnyMethod()
-              .WithOrigins("http://localhost:5173"); // Your Vite React app's default port
-    });
+  options.AddPolicy("CorsPolicy", policy =>
+  {
+    policy.AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithOrigins("http://localhost:5173", 
+            "https://localhost:5173"); // Your Vite React app's default port
+  });
 });
 
 var app = builder.Build();
@@ -40,8 +41,8 @@ app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -49,43 +50,45 @@ app.UseCors("CorsPolicy");
 app.UseRouting();
 
 // ✅ Handles Bearer tokens
-app.UseAuthentication(); 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 // app.MapFallbackToFile("index.html");
-app.MapFallbackToFile("index.html");
+// app.MapFallbackToFile("index.html");
+app.MapFallbackToController("Index", "Fallback");
+
 
 
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    var movieImportService = services.GetRequiredService<IMovieImportService>();
+  var services = scope.ServiceProvider;
+  var context = services.GetRequiredService<ApplicationDbContext>();
+  var movieImportService = services.GetRequiredService<IMovieImportService>();
 
-    try
-    {
-        Console.WriteLine("Applying migrations...");
-        await context.Database.MigrateAsync();
-        Console.WriteLine("Migrations applied successfully.");
+  try
+  {
+    Console.WriteLine("Applying migrations...");
+    await context.Database.MigrateAsync();
+    Console.WriteLine("Migrations applied successfully.");
 
-        // if (!context.Movies.Any())
-        // {
-        //     Console.WriteLine("Seeding database...");
-        //     string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "movies.csv");
-        //     await movieImportService.ImportMoviesFromCsv(filePath);
-        //     Console.WriteLine("Database seeding completed successfully.");
-        // }
-        // else
-        // {
-        //     Console.WriteLine("Database already contains data. Skipping seeding.");
-        // }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error during migration or seeding: {ex.Message}");
-    }
+    // if (!context.Movies.Any())
+    // {
+    //     Console.WriteLine("Seeding database...");
+    //     string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "movies.csv");
+    //     await movieImportService.ImportMoviesFromCsv(filePath);
+    //     Console.WriteLine("Database seeding completed successfully.");
+    // }
+    // else
+    // {
+    //     Console.WriteLine("Database already contains data. Skipping seeding.");
+    // }
+  }
+  catch (Exception ex)
+  {
+    Console.WriteLine($"Error during migration or seeding: {ex.Message}");
+  }
 }
 
 app.Run();
