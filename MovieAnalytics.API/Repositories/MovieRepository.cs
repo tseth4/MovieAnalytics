@@ -16,21 +16,28 @@ namespace MovieAnalytics.API.Repositories
 
         public async Task<PagedList<MovieDto>> GetAllAsync(MovieParams movieParams)
         {
+            var searchTerm = movieParams.SearchTerm?.ToLower() ?? "";
 
             var query = context.Movies.AsQueryable();
 
             if (!string.IsNullOrEmpty(movieParams.SearchTerm))
             {
-                var searchTerm = movieParams.SearchTerm.ToLower();
                 query = query.Where(m =>
-                    m.Title.Contains(searchTerm) ||
-                    m.MovieDirectors.Any(md => md.Director.Name.Contains(searchTerm)) ||
-                    m.MovieGenres.Any(mg => mg.Genre.Name.Contains(searchTerm))
+                    EF.Functions.Like(m.Title.ToLower(), $"%{searchTerm}%") ||
+                    m.MovieDirectors.Select(md => md.Director.Name.ToLower()).Any(name => name.Contains(searchTerm)) ||
+                    m.MovieGenres.Select(mg => mg.Genre.Name.ToLower()).Any(name => name.Contains(searchTerm))
                 );
             }
 
+
+            // Apply Pagination BEFORE projection to DTO
+            var pagedQuery = query
+                .OrderBy(m => m.Title)  // Optional: Order for consistency
+                .Skip((movieParams.PageNumber - 1) * movieParams.PageSize)
+                .Take(movieParams.PageSize);
+
             return await PagedList<MovieDto>.CreateAsync(
-                query.ProjectTo<MovieDto>(mapper.ConfigurationProvider),
+                pagedQuery.ProjectTo<MovieDto>(mapper.ConfigurationProvider),
                 movieParams.PageNumber,
                 movieParams.PageSize
             );
