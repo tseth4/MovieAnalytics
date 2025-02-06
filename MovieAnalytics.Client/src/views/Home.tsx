@@ -4,14 +4,14 @@ import "./homestyles.css";
 export default function Home() {
   const navigate = useNavigate()
 
-  const movieImages = [
-    '/avatar.jpg',
-    '/endgame.jpg',
-    '/infinitywar.jpg',
-    '/jurassicworld.jpg',
-    '/spiderman.jpg',
-    '/titanic.jpg',
-  ];
+  // const movieImages = [
+  //   '/avatar.jpg',
+  //   '/endgame.jpg',
+  //   '/infinitywar.jpg',
+  //   '/jurassicworld.jpg',
+  //   '/spiderman.jpg',
+  //   '/titanic.jpg',
+  // ];
 
 
   return (
