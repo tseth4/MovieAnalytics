@@ -3,6 +3,7 @@ import { useMovies } from "@/context/MoviesContext"
 import { useEffect, useState } from "react"
 import { MovieCard } from "./MovieCard"
 // import debounce from 'lodash/debounce'
+import Loader from "@/components/Loader"
 import { Input } from "@/components/ui/input"
 import { Movie } from "@/types/movie"
 
@@ -48,7 +49,7 @@ export default function Movies({ firstMovies }: MoviesProps) {
   const displayedMovies = isInitialRender ? firstMovies : movies;
 
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <div><Loader/></div>
   if (error) return <div>Error: {error}</div>
   return (
     <>
