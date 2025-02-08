@@ -35,7 +35,10 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Serve static files from wwwroot
+// ORDER MATTERS!
+// OUTPUTING FILES
 app.UseDefaultFiles();
+// ALLOW API to serve static js files
 app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
@@ -45,7 +48,7 @@ if (app.Environment.IsDevelopment())
   app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
 app.UseRouting();
 
@@ -55,7 +58,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// app.MapFallbackToFile("index.html");
 // app.MapFallbackToFile("index.html");
 app.MapFallbackToController("Index", "Fallback");
 
