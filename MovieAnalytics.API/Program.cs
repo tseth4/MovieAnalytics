@@ -21,21 +21,20 @@ builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(options =>
-{
-  options.AddPolicy("CorsPolicy", policy =>
-  {
-    policy.AllowAnyHeader()
-            .AllowAnyMethod()
-            .WithOrigins("http://localhost:5173", 
-            "https://localhost:5173"); // Your Vite React app's default port
-  });
-});
+builder.Services.AddCors();
+
 
 var app = builder.Build();
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
+  .WithOrigins("https://localhost:5173", "http://localhost:5173"));
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
 
 // Serve static files from wwwroot
-// ORDER MATTERS!
+// ORDER MATTERS
 // OUTPUTING FILES
 app.UseDefaultFiles();
 // ALLOW API to serve static js files
@@ -48,15 +47,6 @@ if (app.Environment.IsDevelopment())
   app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
-app.UseCors("CorsPolicy");
-app.UseRouting();
-
-// ✅ Handles Bearer tokens
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
 
 // app.MapFallbackToFile("index.html");
 app.MapFallbackToController("Index", "Fallback");
