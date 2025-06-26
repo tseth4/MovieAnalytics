@@ -23,10 +23,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.ListenAnyIP(80); // Accept traffic on port 80
-});
+// builder.WebHost.ConfigureKestrel(serverOptions =>
+// {
+//     serverOptions.ListenAnyIP(80); // Accept traffic on port 80
+// });
 
 
 var app = builder.Build();
