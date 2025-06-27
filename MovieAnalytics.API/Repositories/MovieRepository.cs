@@ -40,20 +40,23 @@ namespace MovieAnalytics.API.Repositories
         {
             var stopwatch = Stopwatch.StartNew();
 
-            var result = await context.Movies
+            var movies = await context.Movies
                 .Where(m =>
                     m.MovieCountries.Any(mc => mc.Country.Name.Contains(countryName)) &&
                     m.Year.HasValue &&
                     m.Budget.HasValue && m.Budget > 0 &&
                     m.GrossWorldWide.HasValue && m.GrossWorldWide > 0
                 )
+                .ToListAsync(); // Pull to memory
+
+            var result = movies
                 .GroupBy(m => m.Year.Value)
                 .Select(g => new YearlyAggregationDto
                 {
                     Year = g.Key,
-                    AvgBudget = g.Average(m => m.Budget.Value),
-                    AvgGross = g.Average(m => m.GrossWorldWide.Value)
-                }).ToListAsync();
+                    AvgBudget = (decimal)g.Average(m => (double)m.Budget.Value),
+                    AvgGross = (decimal)g.Average(m => (double)m.GrossWorldWide.Value)
+                }).ToList();
 
 
             stopwatch.Stop();
@@ -77,7 +80,7 @@ namespace MovieAnalytics.API.Repositories
                     Title = m.Title,
                     Budget = m.Budget,
                     GrossWorldWide = m.GrossWorldWide,
-                    ROI = (m.GrossWorldWide - m.Budget) / m.Budget * 100
+                    ROI = (double)(m.GrossWorldWide.Value - m.Budget.Value) / (double)m.Budget.Value * 100
                 }).ToListAsync();
             stopwatch.Stop();
             logger.LogInformation($"GetTopProfitableMovies executed in {stopwatch.ElapsedMilliseconds} ms.");

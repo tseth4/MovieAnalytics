@@ -3,6 +3,6 @@
     public class ChartDataDto
     {
         public required List<string> Labels { get; set; }
-        public required List<decimal> Values { get; set; }
+        public required List<double> Values { get; set; }
     }
 }
