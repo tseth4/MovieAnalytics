@@ -1,10 +1,8 @@
 import { ThemeProvider } from "@/components/ThemeProvider"
-import { useEffect } from "react"
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Layout from './components/layout/Layout'
 import { AnalyticsProvider } from './context/AnalyticsContext'
-import { useMovies } from './context/MoviesContext'
 import Analytics from "./views/analytics/Analytics"
 import Home from "./views/Home"
 import MovieDetail from './views/movies/MovieDetail'
@@ -13,11 +11,6 @@ import { Profile } from "./views/profile/Profile"
 
 
 function App() {
-  // Remove fetching logic from here
-  // const { movies, currentPage, fetchMovies } = useMovies()
-  // useEffect(() => {
-  //   fetchMovies(currentPage, { searchTerm: "" })
-  // }, [currentPage])
 
   return (
     <div>

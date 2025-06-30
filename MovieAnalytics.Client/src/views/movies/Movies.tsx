@@ -5,7 +5,6 @@ import { MovieCard } from "./MovieCard"
 // import debounce from 'lodash/debounce'
 import Loader from "@/components/Loader"
 import { Input } from "@/components/ui/input"
-import { Movie } from "@/types/movie"
 
 export default function Movies() {
   const { movies, currentPage, totalPages, loading, error, fetchMovies } = useMovies()
