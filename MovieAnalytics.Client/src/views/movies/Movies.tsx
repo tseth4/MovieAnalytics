@@ -7,26 +7,23 @@ import Loader from "@/components/Loader"
 import { Input } from "@/components/ui/input"
 import { Movie } from "@/types/movie"
 
-interface MoviesProps {
-  firstMovies: Movie[]
-}
-
-export default function Movies({ firstMovies }: MoviesProps) {
+export default function Movies() {
   const { movies, currentPage, totalPages, loading, error, fetchMovies } = useMovies()
   const [searchTerm, setSearchTerm] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [isInitialRender, setIsInitialRender] = useState(true);
 
-
-
-
+  // On mount, fetch movies if not already loaded
   useEffect(() => {
-    if (isInitialRender) {
-      setIsInitialRender(false); // After the first render, mark initial render as complete
-    } else {
+    if (movies.length === 0) {
       fetchMovies(currentPage, { searchTerm: searchQuery });
     }
-  }, [currentPage, searchQuery, fetchMovies])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetchMovies(currentPage, { searchTerm: searchQuery });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, searchQuery]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -35,7 +32,6 @@ export default function Movies({ firstMovies }: MoviesProps) {
   const handleSearchSubmit = () => {
     setSearchQuery(searchTerm); // Only update query when Enter is pressed or button is clicked
   };
-
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -46,8 +42,9 @@ export default function Movies({ firstMovies }: MoviesProps) {
   const handlePageChange = (page: number) => {
     fetchMovies(page, { searchTerm: searchQuery });
   };
-  const displayedMovies = isInitialRender ? firstMovies : movies;
 
+  // Always use movies from context
+  const displayedMovies = movies;
 
   if (loading) return <div><Loader/></div>
   if (error) return <div>Error: {error}</div>

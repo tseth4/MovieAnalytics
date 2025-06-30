@@ -1,8 +1,8 @@
 // context/MoviesContext.tsx
-import { createContext, useContext, useState, ReactNode } from 'react'
-import { Movie } from '@/types/movie'
 import { movieService } from '@/services/api/MoviesService';
 import { FetchParams } from '@/types/fetchParams';
+import { Movie } from '@/types/movie';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 
 interface MoviesContextType {

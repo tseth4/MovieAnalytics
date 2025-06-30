@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useCallback, useMemo } from "react";
 import { BudgetVsGrossChartDataDto, TopProfitableMovieData } from "@/types/chart";
 import { analyticsService } from "@/services/api/AnalyticsService";
 
@@ -19,7 +19,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchBudgetVsGrossData = async (countryName: string) => {
+  const fetchBudgetVsGrossData = useCallback(async (countryName: string) => {
     if (!budgetVsGrossData) { // Fetch only if data hasn't been fetched yet
       setLoading(true);
       setError(null);
@@ -32,9 +32,9 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
         setLoading(false);
       }
     }
-  };
+  }, [budgetVsGrossData]);
 
-  const fetchTopProfitableMovieData = async (countryName: string) => {
+  const fetchTopProfitableMovieData = useCallback(async (countryName: string) => {
     if (!topProfitableData) { // Fetch only if data hasn't been fetched yet
       setLoading(true);
       setError(null);
@@ -47,16 +47,16 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
         setLoading(false);
       }
     }
-  }
+  }, [topProfitableData]);
 
-  const value = {
+  const value = useMemo(() => ({
     budgetVsGrossData,
     topProfitableData,
     loading,
     error,
     fetchBudgetVsGrossData,
     fetchTopProfitableMovieData
-  };
+  }), [budgetVsGrossData, topProfitableData, loading, error, fetchBudgetVsGrossData, fetchTopProfitableMovieData]);
 
   return (
     <AnalyticsContext.Provider value={value}>

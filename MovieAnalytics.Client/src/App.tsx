@@ -13,10 +13,11 @@ import { Profile } from "./views/profile/Profile"
 
 
 function App() {
-  const { movies, currentPage, fetchMovies } = useMovies()
-  useEffect(() => {
-    fetchMovies(currentPage, { searchTerm: "" })
-  }, [currentPage])
+  // Remove fetching logic from here
+  // const { movies, currentPage, fetchMovies } = useMovies()
+  // useEffect(() => {
+  //   fetchMovies(currentPage, { searchTerm: "" })
+  // }, [currentPage])
 
   return (
     <div>
@@ -25,7 +26,7 @@ function App() {
             <Layout>
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/movies" element={<Movies firstMovies={movies} />} />
+                <Route path="/movies" element={<Movies />} />
                 <Route path="/movies/:id" element={<MovieDetail />} />
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/profile" element={<Profile />} />

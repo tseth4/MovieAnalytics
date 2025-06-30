@@ -9,6 +9,7 @@ const api = axios.create({
 
 export const movieService = {
   getMovies: async (page = 1, pageSize = 10, params?: FetchParams) => {
+    console.log("getting movies")
     let url = `/movies?pageNumber=${page}&pageSize=${pageSize}`;
     // Only add searchTerm if it exists and isn't empty
     if (params?.searchTerm) {
